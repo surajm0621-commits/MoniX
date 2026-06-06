@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MoniX — Login</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#060d1a;color:white;font-family:Arial,sans-serif;min-height:100vh;display:flex;flex-direction:column;}
+nav{background:rgba(6,13,26,0.95);padding:15px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(0,229,255,0.2);}
+.logo{font-size:24px;font-weight:bold;background:linear-gradient(90deg,#00E5FF,#00897B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none;}
+.main{flex:1;display:flex;justify-content:center;align-items:center;padding:30px 20px;background:linear-gradient(135deg,#060d1a 0%,#0a1628 50%,#062a2a 100%);}
+.container{width:100%;max-width:420px;}
+.tabs{display:flex;background:rgba(0,229,255,0.05);border:1px solid rgba(0,229,255,0.15);border-radius:12px;padding:4px;margin-bottom:25px;}
+.tab{flex:1;padding:10px;text-align:center;border-radius:10px;cursor:pointer;font-size:14px;color:#aaa;transition:0.3s;}
+.tab.active{background:linear-gradient(90deg,#00E5FF,#00897B);color:#060d1a;font-weight:bold;}
+.form-box{background:rgba(10,22,40,0.8);border:1px solid rgba(0,229,255,0.2);border-radius:20px;padding:30px;backdrop-filter:blur(10px);}
+.form-logo{text-align:center;margin-bottom:20px;}
+.form-logo h2{font-size:28px;font-weight:bold;background:linear-gradient(90deg,#00E5FF,#00897B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.form-logo p{color:#aaa;font-size:13px;margin-top:5px;}
+.input-group{margin-bottom:15px;}
+.input-group label{display:block;color:#87CEEB;font-size:13px;margin-bottom:6px;}
+.input-group input{width:100%;padding:12px 15px;background:rgba(0,229,255,0.05);border:1px solid rgba(0,229,255,0.2);border-radius:10px;color:white;font-size:14px;outline:none;transition:0.3s;}
+.input-group input:focus{border-color:#00E5FF;background:rgba(0,229,255,0.08);}
+.input-group input::placeholder{color:#444;}
+.forgot{text-align:right;margin-top:-10px;margin-bottom:15px;}
+.forgot a{color:#00E5FF;font-size:12px;text-decoration:none;}
+.submit-btn{width:100%;padding:13px;background:linear-gradient(90deg,#00E5FF,#00897B);color:#060d1a;font-weight:bold;font-size:15px;border:none;border-radius:10px;cursor:pointer;margin-bottom:15px;}
+.divider{display:flex;align-items:center;gap:10px;margin:15px 0;}
+.divider span{color:#333;font-size:12px;}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,0.1);}
+.google-btn{width:100%;padding:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);border-radius:10px;color:white;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;}
+.google-btn:hover{background:rgba(255,255,255,0.1);}
+.error{background:rgba(255,68,68,0.1);border:1px solid rgba(255,68,68,0.3);border-radius:8px;padding:10px;color:#ff4444;font-size:13px;margin-bottom:15px;display:none;text-align:center;}
+.success{background:rgba(0,229,255,0.1);border:1px solid rgba(0,229,255,0.3);border-radius:8px;padding:10px;color:#00E5FF;font-size:13px;margin-bottom:15px;display:none;text-align:center;}
+.terms{color:#555;font-size:11px;text-align:center;margin-top:15px;}
+.terms a{color:#00E5FF;text-decoration:none;}
+.membership-badges{display:flex;justify-content:center;gap:10px;margin-bottom:20px;flex-wrap:wrap;}
+.badge{padding:5px 12px;border-radius:15px;font-size:11px;font-weight:bold;}
+.badge.free{background:rgba(0,229,255,0.1);border:1px solid rgba(0,229,255,0.3);color:#00E5FF;}
+.badge.pro{background:rgba(0,137,123,0.2);border:1px solid #00897B;color:#00E5FF;}
+.badge.master{background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.3);color:#FFD700;}
+footer{background:#040a14;padding:20px;text-align:center;border-top:1px solid rgba(0,229,255,0.1);}
+footer p{color:#333;font-size:12px;}
+footer a{color:#00E5FF;margin:0 8px;text-decoration:none;font-size:12px;}
+</style>
+</head>
+<body>
+<nav>
+<a href="index.html" class="logo">MoniX</a>
+</nav>
+<div class="main">
+<div class="container">
+<div class="membership-badges">
+<span class="badge free">🆓 Explorer</span>
+<span class="badge pro">🚀 Creator</span>
+<span class="badge master">👑 Master</span>
+</div>
+<div class="tabs">
+<div class="tab active" onclick="switchTab('login')">Login</div>
+<div class="tab" onclick="switchTab('register')">Register</div>
+</div>
+
+<!-- Login Form -->
+<div class="form-box" id="login-form">
+<div class="form-logo">
+<h2>Welcome Back!</h2>
+<p>Login to your MoniX account</p>
+</div>
+<div class="error" id="login-error"></div>
+<div class="success" id="login-success"></div>
+<div class="input-group">
+<label>📧 Email Address</label>
+<input type="email" id="login-email" placeholder="Enter your email"/>
+</div>
+<div class="input-group">
+<label>🔒 Password</label>
+<input type="password" id="login-pass" placeholder="Enter your password"/>
+</div>
+<div class="forgot"><a href="#">Forgot Password?</a></div>
+<button class="submit-btn" onclick="doLogin()">Login to MoniX →</button>
+<div class="divider"><span>OR</span></div>
+<button class="google-btn" onclick="googleLogin()">
+<svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+Continue with Google
+</button>
+<p class="terms">By continuing you agree to our <a href="#">Terms</a> & <a href="#">Privacy Policy</a></p>
+</div>
+
+<!-- Register Form -->
+<div class="form-box" id="register-form" style="display:none;">
+<div class="form-logo">
+<h2>Join MoniX!</h2>
+<p>Create your free account today</p>
+</div>
+<div class="error" id="reg-error"></div>
+<div class="success" id="reg-success"></div>
+<div class="input-group">
+<label>👤 Full Name</label>
+<input type="text" id="reg-name" placeholder="Enter your name"/>
+</div>
+<div class="input-group">
+<label>📧 Email Address</label>
+<input type="email" id="reg-email" placeholder="Enter your email"/>
+</div>
+<div class="input-group">
+<label>🔒 Password</label>
+<input type="password" id="reg-pass" placeholder="Create password (8+ chars)"/>
+</div>
+<div class="input-group">
+<label>🔒 Confirm Password</label>
+<input type="password" id="reg-confirm" placeholder="Confirm your password"/>
+</div>
+<button class="submit-btn" onclick="doRegister()">Create Free Account →</button>
+<div class="divider"><span>OR</span></div>
+<button class="google-btn" onclick="googleLogin()">
+<svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+Sign up with Google
+</button>
+<p class="terms">By registering you agree to our <a href="#">Terms</a> & <a href="#">Privacy Policy</a></p>
+</div>
+</div>
+</div>
+<footer>
+<p>© 2026 MoniX — India's Digital Ecosystem</p>
+<a href="index.html">Home</a>
+<a href="#">Privacy</a>
+<a href="#">Terms</a>
+</footer>
+<script>
+function switchTab(tab){
+document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+event.target.classList.add('active');
+if(tab==='login'){
+document.getElementById('login-form').style.display='block';
+document.getElementById('register-form').style.display='none';
+}else{
+document.getElementById('login-form').style.display='none';
+document.getElementById('register-form').style.display='block';
+}}
+function doLogin(){
+var email=document.getElementById('login-email').value;
+var pass=document.getElementById('login-pass').value;
+var err=document.getElementById('login-error');
+var suc=document.getElementById('login-success');
+if(!email||!pass){err.textContent='Please fill all fields!';err.style.display='block';suc.style.display='none';return;}
+if(email==='admin@monix.com'&&pass==='monix@2026'){
+suc.textContent='✅ Login Successful! Redirecting...';suc.style.display='block';err.style.display='none';
+setTimeout(()=>{window.location.href='dashboard.html';},1500);
+}else{err.textContent='❌ Invalid email or password!';err.style.display='block';suc.style.display='none';}}
+function doRegister(){
+var name=document.getElementById('reg-name').value;
+var email=document.getElementById('reg-email').value;
+var pass=document.getElementById('reg-pass').value;
+var confirm=document.getElementById('reg-confirm').value;
+var err=document.getElementById('reg-error');
+var suc=document.getElementById('reg-success');
+if(!name||!email||!pass||!confirm){err.textContent='Please fill all fields!';err.style.display='block';return;}
+if(pass.length<8){err.textContent='Password must be 8+ characters!';err.style.display='block';return;}
+if(pass!==confirm){err.textContent='Passwords do not match!';err.style.display='block';return;}
+suc.textContent='✅ Account created! Welcome to MoniX!';suc.style.display='block';err.style.display='none';
+setTimeout(()=>{window.location.href='dashboard.html';},1500);}
+function googleLogin(){
+var err=document.getElementById('login-error')||document.getElementById('reg-error');
+alert('Google Login requires backend setup.\nComing soon in MoniX v2.0! 🚀');}
+</script>
+</body>
+  </html>
