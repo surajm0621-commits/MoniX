@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MoniX — AI Tools Hub</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#060d1a;color:white;font-family:Arial,sans-serif;}
+nav{background:rgba(6,13,26,0.95);padding:15px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(0,229,255,0.2);position:sticky;top:0;z-index:100;}
+.logo{font-size:24px;font-weight:bold;background:linear-gradient(90deg,#00E5FF,#00897B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none;}
+.nav-links a{color:#aaa;text-decoration:none;margin-left:15px;font-size:13px;}
+.nav-links a:hover{color:#00E5FF;}
+.hero{text-align:center;padding:50px 20px;background:linear-gradient(135deg,#060d1a,#0a1628,#062a2a);}
+.hero-badge{background:rgba(0,229,255,0.1);border:1px solid rgba(0,229,255,0.3);border-radius:20px;padding:6px 15px;font-size:12px;color:#00E5FF;display:inline-block;margin-bottom:15px;}
+.hero h1{font-size:36px;font-weight:bold;background:linear-gradient(135deg,#ffffff,#00E5FF,#00897B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px;}
+.hero p{color:#aaa;font-size:14px;}
+.search-bar{max-width:500px;margin:20px auto 0;position:relative;}
+.search-bar input{width:100%;padding:12px 50px 12px 20px;background:rgba(0,229,255,0.05);border:1px solid rgba(0,229,255,0.3);border-radius:25px;color:white;font-size:14px;outline:none;}
+.search-bar input::placeholder{color:#444;}
+.search-bar span{position:absolute;right:15px;top:50%;transform:translateY(-50%);font-size:18px;}
+.tabs{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;padding:25px 20px 10px;}
+.tab{padding:8px 18px;border-radius:20px;border:1px solid rgba(0,229,255,0.2);color:#aaa;cursor:pointer;font-size:13px;background:transparent;transition:0.3s;}
+.tab.active{background:linear-gradient(90deg,#00E5FF,#00897B);color:#060d1a;font-weight:bold;border:none;}
+.section{padding:20px;display:none;max-width:800px;margin:0 auto;}
+.section.active{display:block;}
+.tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:15px;}
+.tool-card{background:linear-gradient(135deg,#0a1628,#062a2a);border:1px solid rgba(0,229,255,0.15);border-radius:15px;padding:20px 15px;text-align:center;cursor:pointer;transition:0.3s;}
+.tool-card:hover{border-color:#00E5FF;transform:translateY(-5px);box-shadow:0 10px 25px rgba(0,229,255,0.15);}
+.tool-card .icon{font-size:32px;margin-bottom:10px;}
+.tool-card h3{color:#00E5FF;font-size:13px;font-weight:bold;margin-bottom:5px;}
+.tool-card p{color:#555;font-size:11px;}
+.tool-card .badge{background:rgba(0,229,255,0.1);color:#00E5FF;font-size:10px;padding:2px 8px;border-radius:10px;display:inline-block;margin-top:8px;}
+.tool-card .badge.pro{background:rgba(255,215,0,0.1);color:#FFD700;}
+.tool-area{background:linear-gradient(135deg,#0a1628,#062a2a);border:1px solid rgba(0,229,255,0.2);border-radius:15px;padding:25px;margin-bottom:20px;}
+.tool-area h3{color:#00E5FF;font-size:16px;margin-bottom:15px;display:flex;align-items:center;gap:10px;}
+textarea,input[type=text],select{width:100%;padding:12px;background:rgba(0,229,255,0.05);border:1px solid rgba(0,229,255,0.2);border-radius:10px;color:white;font-size:14px;outline:none;margin-bottom:12px;resize:vertical;}
+textarea::placeholder,input::placeholder{color:#444;}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;}
+.run-btn{padding:11px 25px;background:linear-gradient(90deg,#00E5FF,#00897B);color:#060d1a;border:none;border-radius:10px;font-weight:bold;cursor:pointer;font-size:14px;}
+.outline-btn{padding:11px 25px;background:transparent;border:1px solid #00E5FF;color:#00E5FF;border-radius:10px;cursor:pointer;font-size:14px;}
+.result-box{background:#000;border:1px solid rgba(0,229,255,0.3);border-radius:10px;padding:15px;margin-top:15px;font-family:monospace;font-size:13px;color:#00E5FF;min-height:80px;display:none;white-space:pre-wrap;word-break:break-all;}
+.loading{color:#aaa;font-style:italic;}
+footer{background:#040a14;padding:30px 20px;border-top:1px solid rgba(0,229,255,0.1);text-align:center;margin-top:40px;}
+footer p{color:#333;font-size:12px;}
+footer a{color:#00E5FF;margin:0 8px;text-decoration:none;font-size:12px;}
+</style>
+</head>
+<body>
+<nav>
+<a href="index.html" class="logo">MoniX</a>
+<div class="nav-links">
+<a href="index.html">Home</a>
+<a href="learn.html">Learn</a>
+<a href="exams.html">Exams</a>
+<a href="login.html">Login</a>
+</div>
+</nav>
+
+<div class="hero">
+<div class="hero-badge">🤖 30+ AI Tools</div>
+<h1>MoniX AI Tools Hub</h1>
+<p>Powerful AI Tools — Free & Ethical</p>
+<div class="search-bar">
+<input type="text" placeholder="Search AI tools..." id="search-input" oninput="searchTools()"/>
+<span>🔍</span>
+</div>
+</div>
+
+<div class="tabs">
+<div class="tab active" onclick="showTab('all',this)">⚡ All Tools</div>
+<div class="tab" onclick="showTab('education',this)">📚 Education</div>
+<div class="tab" onclick="showTab('coding',this)">💻 Coding</div>
+<div class="tab" onclick="showTab('writing',this)">✍️ Writing</div>
+<div class="tab" onclick="showTab('security',this)">🔒 Security</div>
+<div class="tab" onclick="showTab('utility',this)">🛠️ Utility</div>
+</div>
+
+<!-- All Tools -->
+<div class="section active" id="all">
+<div class="tools-grid" id="all-grid">
+<div class="tool-card" onclick="openTool('chat')"><div class="icon">💬</div><h3>Moni AI Chat</h3><p>Ask anything</p><span class="badge">Free</span></div>
+<div class="tool-card" onclick="openTool('notes')"><div class="icon">📝</div><h3>Notes Generator</h3><p>Auto notes</p><span class="badge">Free</span></div>
+<div class="tool-card" onclick="openTool('homework')"><div class="icon">❓</div><h3>Homework Helper</h3><p>Solve problems</p><span class="badge">Free</span></div>
+<div class="tool-card" onclick="openTool('quiz')"><div class="icon">🧠</div><h3>Quiz Maker</h3><p>Create quizzes</p><span class="badge">Free</span></div>
+<div class="tool-card" onclick="openTool('code')"><div class="icon">💻</div><h3>Code Generator</h3><p>Write code</p><span class="badge">Free</span></div>
+<div class="tool-card" onclick="openTool('debug')"><div class="icon">🐛</div><h3>Code Debugger</h3><p>Fix errors</p><span class="badge">Free</span></div>
+<div class="tool-card" onclick="openTool('essay')"><div class="icon">✍️</div><h3>Essay Writer</h3><p>Write essays</p><span class="badge">Free</span></div>
+<div class="tool-card" onclick="openTool('resume')"><div class="icon">📄</div><h3>Resume Builder</h3><p>Pro resume</p><span class="badge pro">Creator</span></div>
+<div class="tool-card" onclick="openTool('translate')"><div class="icon">🌐</div><h3>Translator</h3><p>100+ languages</p><span class="badge">Free</span></div>
+<div class="tool-card" onclick="openTool('summarize')"><div class="icon">📋</div><h3>Summarizer</h3><p>Short summaries</p><span class="badge">Free</span></div>
+<div class="tool-card" onclick="openTool('password')"><div class="icon">🔑</div><h3>Password Check</h3><p>Check strength</p><span class="badge">Free</span></div>
+<div class="tool-card" onclick="openTool('hash')"><div class="icon">🔐</div><h3>Hash Generator</h3><p>SHA, MD5</p><span class="badge">Free</span></div>
+<div class="tool-card" onclick="openTool('dns')"><div class="icon">🌐</div><h3>DNS Lookup</h3><p>Domain info</p><span class="badge">Free</span></div>
+<div class="tool-card" onclick="openTool('ip')"><div class="icon">📡</div><h3>IP Checker</h3><p>Your IP info</p><span class="badge">Free</span></div>
+<div class="tool-card" onclick="openTool('base64')"><div class="icon">📊</div><h3>Base64</h3><p>Encode/Decode</p><span class="badge">Free</span></div>
+<div class="tool-card" onclick="openTool('json')"><div class="icon">📋</div><h3>JSON Formatter</h3><p>Format JSON</p><span class="badge">Free</span></div>
+<div class="tool-card" onclick="openTool('genpass')"><div class="icon">🎲</div><h3>Pass Generator</h3><p>Strong passwords</p><span class="badge">Free</span></div>
+<div class="tool-card" onclick="openTool('url')"><div class="icon">🔗</div><h3>URL Encoder</h3><p>Encode URLs</p><span class="badge">Free</span></div>
+</div>
+</div>
+
+<!-- Tool Interface -->
+<div class="section" id="tool-interface">
+<button onclick="showTab('all',null)" style="background:transparent;border:1px solid #00E5FF;color:#00E5FF;padding:8px 15px;border-radius:8px;cursor:pointer;margin-bottom:20px;font-size:13px;">← Back to Tools</button>
+<div class="tool-area" id="tool-content"></div>
+</div>
+
+<footer>
+<p>© 2026 MoniX — India's Digital Ecosystem</p>
+<a href="index.html">Home</a>
+<a href="login.html">Login</a>
+<a href="#">Privacy</a>
+</footer>
+
+<script>
+var tools={
+chat:{icon:'💬',title:'Moni AI Chat',html:`<textarea id="chat-input" rows="3" placeholder="Ask me anything..."></textarea><div class="btn-row"><button class="run-btn" onclick="runChat()">Ask Moni AI</button></div><div class="result-box" id="chat-result"></div>`},
+notes:{icon:'📝',title:'Notes Generator',html:`<input type="text" id="notes-input" placeholder="Topic (e.g. Photosynthesis, World War 2)"/><div class="btn-row"><button class="run-btn" onclick="runNotes()">Generate Notes</button></div><div class="result-box" id="notes-result"></div>`},
+homework:{icon:'❓',title:'Homework Helper',html:`<textarea id="hw-input" rows="3" placeholder="Type your question..."></textarea><div class="btn-row"><button class="run-btn" onclick="runHomework()">Get Answer</button></div><div class="result-box" id="hw-result"></div>`},
+quiz:{icon:'🧠',title:'Quiz Maker',html:`<input type="text" id="quiz-input" placeholder="Topic for quiz (e.g. Indian History)"/><div class="btn-row"><button class="run-btn" onclick="runQuiz()">Generate Quiz</button></div><div class="result-box" id="quiz-result"></div>`},
+code:{icon:'💻',title:'Code Generator',html:`<input type="text" id="code-input" placeholder="What code do you need? (e.g. Python calculator)"/><select id="code-lang"><option>Python</option><option>JavaScript</option><option>HTML</option><option>Java</option><option>C++</option></select><div class="btn-row"><button class="run-btn" onclick="runCode()">Generate Code</button></div><div class="result-box" id="code-result"></div>`},
+debug:{icon:'🐛',title:'Code Debugger',html:`<textarea id="debug-input" rows="4" placeholder="Paste your buggy code here..."></textarea><div class="btn-row"><button class="run-btn" onclick="runDebug()">Debug Code</button></div><div class="result-box" id="debug-result"></div>`},
+essay:{icon:'✍️',title:'Essay Writer',html:`<input type="text" id="essay-input" placeholder="Essay topic..."/><select id="essay-type"><option>Descriptive</option><option>Argumentative</option><option>Narrative</option></select><div class="btn-row"><button class="run-btn" onclick="runEssay()">Write Essay</button></div><div class="result-box" id="essay-result"></div>`},
+resume:{icon:'📄',title:'Resume Builder',html:`<input type="text" id="res-name" placeholder="Your Name"/><input type="text" id="res-skills" placeholder="Your Skills (e.g. Python, Web Dev)"/><input type="text" id="res-exp" placeholder="Experience/Education"/><div class="btn-row"><button class="run-btn" onclick="runResume()">Build Resume</button></div><div class="result-box" id="res-result"></div>`},
+translate:{icon:'🌐',title:'Translator',html:`<textarea id="trans-input" rows="3" placeholder="Enter text to translate..."></textarea><select id="trans-lang"><option>Hindi</option><option>English</option><option>Spanish</option><option>French</option><option>German</option><option>Japanese</option></select><div class="btn-row"><button class="run-btn" onclick="runTranslate()">Translate</button></div><div class="result-box" id="trans-result"></div>`},
+summarize:{icon:'📋',title:'Summarizer',html:`<textarea id="sum-input" rows="4" placeholder="Paste long text to summarize..."></textarea><div class="btn-row"><button class="run-btn" onclick="runSummarize()">Summarize</button></div><div class="result-box" id="sum-result"></div>`},
+password:{icon:'🔑',title:'Password Strength',html:`<input type="text" id="pass-input" placeholder="Enter password to check"/><div class="btn-row"><button class="run-btn" onclick="checkPass()">Check</button></div><div class="result-box" id="pass-result"></div>`},
+hash:{icon:'🔐',title:'Hash Generator',html:`<input type="text" id="hash-input" placeholder="Enter text"/><select id="hash-type"><option value="SHA-256">SHA-256</option><option value="SHA-1">SHA-1</option></select><div class="btn-row"><button class="run-btn" onclick="genHash()">Generate</button></div><div class="result-box" id="hash-result"></div>`},
+dns:{icon:'🌐',title:'DNS Lookup',html:`<input type="text" id="dns-input" placeholder="Enter domain (e.g. google.com)"/><div class="btn-row"><button class="run-btn" onclick="dnsLookup()">Lookup</button></div><div class="result-box" id="dns-result"></div>`},
+ip:{icon:'📡',title:'IP Checker',html:`<div class="btn-row"><button class="run-btn" onclick="getIP()">Get My IP</button></div><div class="result-box" id="ip-result"></div>`},
+base64:{icon:'📊',title:'Base64',html:`<input type="text" id="b64-input" placeholder="Enter text"/><div class="btn-row"><button class="run-btn" onclick="b64e()">Encode</button><button class="outline-btn" onclick="b64d()">Decode</button></div><div class="result-box" id="b64-result"></div>`},
+json:{icon:'📋',title:'JSON Formatter',html:`<textarea id="json-input" rows="4" placeholder="Paste JSON..."></textarea><div class="btn-row"><button class="run-btn" onclick="fmtJson()">Format</button></div><div class="result-box" id="json-result"></div>`},
+genpass:{icon:'🎲',title:'Password Generator',html:`<input type="number" id="gp-len" placeholder="Length (8-32)" min="8" max="32"/><div class="btn-row"><button class="run-btn" onclick="genPass()">Generate</button></div><div class="result-box" id="gp-result"></div>`},
+url:{icon:'🔗',title:'URL Encoder',html:`<input type="text" id="url-input" placeholder="Enter URL or text"/><div class="btn-row"><button class="run-btn" onclick="urlE()">Encode</button><button class="outline-btn" onclick="urlD()">Decode</button></div><div class="result-box" id="url-result"></div>`}
+};
+
+function showTab(tab,el){
+document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+document.getElementById(tab==='all'?'all':'tool-interface').classList.add('active');
+if(el)el.classList.add('active');
+else document.querySelector('.tab').classList.add('active');
+}
+
+function openTool(id){
+var t=tools[id];
+var content=document.getElementById('tool-content');
+content.innerHTML='<h3>'+t.icon+' '+t.title+'</h3>'+t.html;
+document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+document.getElementById('tool-interface').classList.add('active');
+}
+
+function searchTools(){
+var q=document.getElementById('search-input').value.toLowerCase();
+document.querySelectorAll('.tool-card').forEach(c=>{
+c.style.display=c.textContent.toLowerCase().includes(q)?'block':'none';
+});
+}
+
+// AI Tools (Smart responses)
+function runChat(){
+var q=document.getElementById('chat-input').value;
+var r=document.getElementById('chat-result');
+r.style.display='block';
+if(!q){r.textContent='Please enter a question!';return;}
+r.textContent='🤖 Moni AI: '+getSmartResponse(q);
+}
+function runNotes(){
+var t=document.getElementById('notes-input').value;
+var r=document.getElementById('notes-result');
+r.style.display='block';
+if(!t){r.textContent='Enter a topic!';return;}
+r.textContent='📝 Notes: '+t+'\n──────────────\n• Definition: '+t+' is an important concept\n• Key Points:\n  1. Understanding basics of '+t+'\n  2. Applications in real world\n  3. Important formulas/facts\n• Summary: Study '+t+' thoroughly for exams\n\n💡 Tip: Use MoniX Learn for detailed notes!';
+}
+function runHomework(){
+var q=document.getElementById('hw-input').value;
+var r=document.getElementById('hw-result');
+r.style.display='block';
+if(!q){r.textContent='Enter your question!';return;}
+r.textContent='📚 Answer:\n'+getSmartResponse(q)+'\n\n💡 For detailed explanation, visit MoniX Learn section!';
+}
+function runQuiz(){
+var t=document.getElementById('quiz-input').value;
+var r=document.getElementById('quiz-result');
+r.style.display='block';
+if(!t){r.textContent='Enter a topic!';return;}
+r.textContent='🧠 Quiz: '+t+'\n──────────────\nQ1. What is the main concept of '+t+'?\na) Option A  b) Option B  c) Option C  d) Option D\n\nQ2. Which of the following relates to '+t+'?\na) Option A  b) Option B  c) Option C  d) Option D\n\nQ3. '+t+' was first introduced by?\na) Option A  b) Option B  c) Option C  d) Option D\n\n✅ Answers available in MoniX Premium!';
+}
+function runCode(){
+var q=document.getElementById('code-input').value;
+var lang=document.getElementById('code-lang').value;
+var r=document.getElementById('code-result');
+r.style.display='block';
+if(!q){r.textContent='Enter what code you need!';return;}
+r.textContent='💻 '+lang+' Code:\n──────────────\n// '+q+'\n// Generated by MoniX AI\n\n'+getCodeResponse(lang,q);
+}
+function runDebug(){
+var c=document.getElementById('debug-input').value;
+var r=document.getElementById('debug-result');
+r.style.display='block';
+if(!c){r.textContent='Paste your code!';return;}
+r.textContent='🐛 Debug Report:\n──────────────\n✅ Code received\n⚠️ Check for:\n• Syntax errors (missing brackets, semicolons)\n• Variable declarations\n• Logic errors\n• Off-by-one errors\n\n💡 Tip: Use proper indentation\n🔧 For AI-powered debugging, upgrade to Creator plan!';
+}
+function runEssay(){
+var t=document.getElementById('essay-input').value;
+var type=document.getElementById('essay-type').value;
+var r=document.getElementById('essay-result');
+r.style.display='block';
+if(!t){r.textContent='Enter essay topic!';return;}
+r.textContent='✍️ '+type+' Essay: '+t+'\n──────────────\nIntroduction:\n'+t+' is one of the most important topics in today\'s world...\n\nBody:\nFirstly, '+t+' plays a crucial role in our society...\nSecondly, the impact of '+t+' can be seen everywhere...\n\nConclusion:\nIn conclusion, '+t+' is vital for our future...\n\n📝 Full essay available with Creator plan!';
+}
+function runResume(){
+var n=document.getElementById('res-name').value;
+var s=document.getElementById('res-skills').value;
+var e=document.getElementById('res-exp').value;
+var r=document.getElementById('res-result');
+r.style.display='block';
+if(!n){r.textContent='Enter your name!';return;}
+r.textContent='📄 RESUME\n══════════════\n'+n.toUpperCase()+'\n──────────────\n📧 email@example.com | 📱 +91 XXXXXXXXXX\n\n🎯 OBJECTIVE\nSeeking opportunities to apply my skills in '+s+'\n\n💼 SKILLS\n'+s+'\n\n📚 EDUCATION/EXPERIENCE\n'+e+'\n\n🏆 ACHIEVEMENTS\n• MoniX Certified User\n• Completed online courses\n\n✅ Download full PDF with Creator plan!';
+}
+function runTranslate(){
+var t=document.getElementById('trans-input').value;
+var lang=document.getElementById('trans-lang').value;
+var r=document.getElementById('trans-result');
+r.style.display='block';
+if(!t){r.textContent='Enter text!';return;}
+r.textContent='🌐 Translation to '+lang+':\n──────────────\n"'+t+'"\n\n➡️ ['+lang+' translation]\n\n💡 For accurate AI translation,\nvisit: translate.google.com\n\nFull AI translation coming in MoniX v2.0!';
+}
+function runSummarize(){
+var t=document.getElementById('sum-input').value;
+var r=document.getElementById('sum-result');
+r.style.display='block';
+if(!t){r.textContent='Paste text to summarize!';return;}
+var words=t.split(' ').length;
+r.textContent='📋 Summary ('+words+' words → ~'+(Math.floor(words/5))+' words):\n──────────────\n'+t.substring(0,200)+'...\n\n🔑 Key Points:\n• Main idea extracted\n• Important details noted\n• Conclusion identified\n\n✅ Full AI summary with Creator plan!';
+}
+function checkPass(){
+var p=document.getElementById('pass-input').value;
+var r=document.getElementById('pass-result');
+r.style.display='block';
+var s=0;var tips=[];
+if(p.length>=8)s++;else 
