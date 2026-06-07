@@ -6,172 +6,237 @@
 <title>MoniX — Learn • Create • Earn • Grow</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
-body{background:#060d1a;color:white;font-family:'Arial',sans-serif;overflow-x:hidden;}
-nav{background:rgba(6,13,26,0.95);padding:15px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(0,229,255,0.2);position:sticky;top:0;z-index:100;backdrop-filter:blur(10px);}
-.logo{font-size:26px;font-weight:bold;background:linear-gradient(90deg,#00E5FF,#0097A7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.nav-links a{color:#aaa;text-decoration:none;margin-left:15px;font-size:13px;}
-.nav-links a:hover{color:#00E5FF;}
-.hero{min-height:90vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:40px 20px;background:linear-gradient(135deg,#060d1a 0%,#0a1628 50%,#062a2a 100%);}
-.hero-badge{background:rgba(0,229,255,0.1);border:1px solid rgba(0,229,255,0.3);border-radius:20px;padding:6px 15px;font-size:12px;color:#00E5FF;margin-bottom:20px;}
-.hero h1{font-size:48px;font-weight:bold;background:linear-gradient(135deg,#ffffff,#00E5FF,#00897B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.2;margin-bottom:15px;}
-.hero-tagline{font-size:16px;color:#aaa;margin-bottom:10px;}
-.hero-pills{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:20px 0;}
-.pill{background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.2);border-radius:20px;padding:6px 15px;font-size:13px;color:#87CEEB;}
-.hero-btns{display:flex;flex-wrap:wrap;justify-content:center;gap:15px;margin-top:30px;}
-.btn-primary{padding:14px 30px;background:linear-gradient(90deg,#00E5FF,#00897B);color:#060d1a;font-weight:bold;border:none;border-radius:25px;font-size:15px;cursor:pointer;text-decoration:none;}
-.btn-secondary{padding:14px 30px;background:transparent;border:2px solid #00E5FF;color:#00E5FF;border-radius:25px;font-size:15px;cursor:pointer;text-decoration:none;}
-.stats{display:flex;flex-wrap:wrap;justify-content:center;gap:30px;padding:50px 20px;background:rgba(0,229,255,0.03);border-top:1px solid rgba(0,229,255,0.1);border-bottom:1px solid rgba(0,229,255,0.1);}
+body{background:#060d1a;color:white;font-family:Arial,sans-serif;overflow-x:hidden;}
+nav{background:rgba(6,13,26,0.97);padding:12px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(0,229,255,0.15);position:sticky;top:0;z-index:100;backdrop-filter:blur(10px);}
+.logo{font-size:26px;font-weight:bold;background:linear-gradient(90deg,#00E5FF,#00897B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none;}
+.nav-links{display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
+.nav-links a{color:#aaa;text-decoration:none;padding:6px 12px;border-radius:8px;font-size:13px;transition:0.3s;}
+.nav-links a:hover{color:#00E5FF;background:rgba(0,229,255,0.08);}
+.nav-links .login-link{background:linear-gradient(90deg,#00E5FF,#00897B);color:#060d1a;font-weight:bold;border-radius:20px;padding:7px 18px;}
+.hero{min-height:95vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:40px 20px;background:linear-gradient(135deg,#060d1a 0%,#0a1628 40%,#062a2a 100%);position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at center,rgba(0,229,255,0.03) 0%,transparent 60%);pointer-events:none;}
+.hero-badge{background:rgba(0,229,255,0.1);border:1px solid rgba(0,229,255,0.3);border-radius:20px;padding:6px 18px;font-size:12px;color:#00E5FF;margin-bottom:20px;display:inline-block;}
+.hero h1{font-size:52px;font-weight:bold;background:linear-gradient(135deg,#ffffff 0%,#87CEEB 40%,#00E5FF 70%,#00897B 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.2;margin-bottom:15px;}
+.hero-sub{font-size:15px;color:#aaa;margin-bottom:25px;max-width:500px;}
+.search-container{width:100%;max-width:550px;margin:0 auto 30px;}
+.search-box{display:flex;background:rgba(0,229,255,0.05);border:1px solid rgba(0,229,255,0.3);border-radius:30px;overflow:hidden;padding:5px;}
+.search-box input{flex:1;background:transparent;border:none;color:white;font-size:14px;padding:10px 15px;outline:none;}
+.search-box input::placeholder{color:#444;}
+.search-box button{padding:10px 20px;background:linear-gradient(90deg,#00E5FF,#00897B);color:#060d1a;border:none;border-radius:25px;font-weight:bold;cursor:pointer;font-size:13px;}
+.hero-pills{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:25px;}
+.pill{background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.15);border-radius:20px;padding:6px 14px;font-size:12px;color:#87CEEB;cursor:pointer;transition:0.3s;}
+.pill:hover{background:rgba(0,229,255,0.15);border-color:#00E5FF;}
+.hero-btns{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;}
+.btn-primary{padding:14px 32px;background:linear-gradient(90deg,#00E5FF,#00897B);color:#060d1a;font-weight:bold;border:none;border-radius:25px;font-size:15px;cursor:pointer;text-decoration:none;}
+.btn-secondary{padding:14px 32px;background:transparent;border:2px solid rgba(0,229,255,0.5);color:#00E5FF;border-radius:25px;font-size:15px;cursor:pointer;text-decoration:none;}
+.stats{display:flex;flex-wrap:wrap;justify-content:center;gap:25px;padding:40px 20px;background:rgba(0,229,255,0.02);border-top:1px solid rgba(0,229,255,0.08);border-bottom:1px solid rgba(0,229,255,0.08);}
 .stat{text-align:center;}
-.stat h2{font-size:36px;font-weight:bold;background:linear-gradient(90deg,#00E5FF,#00897B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.stat p{color:#aaa;font-size:13px;margin-top:5px;}
+.stat h2{font-size:32px;font-weight:bold;background:linear-gradient(90deg,#00E5FF,#00897B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.stat p{color:#aaa;font-size:12px;margin-top:4px;}
+.ai-assistant{padding:40px 20px;background:linear-gradient(135deg,#060d1a,#062a2a);text-align:center;}
+.ai-box{max-width:600px;margin:0 auto;background:linear-gradient(135deg,#0a1628,#062a2a);border:1px solid rgba(0,229,255,0.3);border-radius:20px;padding:25px;}
+.ai-header{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:15px;}
+.ai-header h3{color:#00E5FF;font-size:18px;}
+.ai-input-row{display:flex;gap:10px;}
+.ai-input-row input{flex:1;padding:12px 15px;background:rgba(0,229,255,0.05);border:1px solid rgba(0,229,255,0.2);border-radius:10px;color:white;font-size:14px;outline:none;}
+.ai-input-row button{padding:12px 20px;background:linear-gradient(90deg,#00E5FF,#00897B);color:#060d1a;border:none;border-radius:10px;font-weight:bold;cursor:pointer;font-size:13px;}
+.ai-response{background:#000;border:1px solid rgba(0,229,255,0.2);border-radius:10px;padding:15px;margin-top:15px;font-size:13px;color:#00E5FF;min-height:60px;display:none;text-align:left;white-space:pre-wrap;}
+.ai-suggestions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;justify-content:center;}
+.ai-suggest{background:rgba(0,229,255,0.05);border:1px solid rgba(0,229,255,0.15);border-radius:15px;padding:5px 12px;font-size:11px;color:#87CEEB;cursor:pointer;}
+.ai-suggest:hover{background:rgba(0,229,255,0.1);}
 .section{padding:60px 20px;text-align:center;}
-.section-title{font-size:26px;font-weight:bold;background:linear-gradient(90deg,#00E5FF,#00897B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px;}
-.section-sub{color:#aaa;font-size:14px;margin-bottom:30px;}
-.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:15px;max-width:700px;margin:0 auto;}
-.card{background:linear-gradient(135deg,#0a1628,#062a2a);border:1px solid rgba(0,229,255,0.2);border-radius:15px;padding:20px 15px;text-align:center;transition:0.3s;cursor:pointer;}
-.card:hover{border-color:#00E5FF;transform:translateY(-5px);box-shadow:0 10px 30px rgba(0,229,255,0.15);}
-.card-icon{font-size:30px;margin-bottom:10px;}
-.card h3{color:#87CEEB;font-size:13px;font-weight:bold;}
-.card p{color:#555;font-size:11px;margin-top:5px;}
-.ai-section{padding:60px 20px;background:linear-gradient(135deg,#060d1a,#062a2a);text-align:center;}
-.ai-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;max-width:700px;margin:20px auto 0;}
-.ai-card{background:rgba(0,229,255,0.05);border:1px solid rgba(0,229,255,0.15);border-radius:12px;padding:15px;text-align:center;}
-.ai-card:hover{background:rgba(0,229,255,0.1);border-color:#00E5FF;}
-.ai-card .icon{font-size:24px;margin-bottom:8px;}
-.ai-card p{color:#87CEEB;font-size:12px;}
-.membership{padding:60px 20px;text-align:center;}
-.plans{display:flex;flex-wrap:wrap;justify-content:center;gap:20px;margin-top:20px;}
-.plan{background:linear-gradient(135deg,#0a1628,#062a2a);border:1px solid rgba(0,229,255,0.2);border-radius:20px;padding:30px 20px;width:200px;}
+.section-badge{background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.2);border-radius:15px;padding:5px 15px;font-size:12px;color:#87CEEB;display:inline-block;margin-bottom:12px;}
+.section-title{font-size:26px;font-weight:bold;background:linear-gradient(90deg,#00E5FF,#00897B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px;}
+.section-sub{color:#aaa;font-size:13px;margin-bottom:30px;}
+.categories-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;max-width:700px;margin:0 auto;}
+.cat-card{background:linear-gradient(135deg,#0a1628,#062a2a);border:1px solid rgba(0,229,255,0.15);border-radius:15px;padding:18px 12px;text-align:center;cursor:pointer;transition:0.3s;text-decoration:none;display:block;}
+.cat-card:hover{border-color:#00E5FF;transform:translateY(-4px);box-shadow:0 8px 20px rgba(0,229,255,0.15);}
+.cat-card .icon{font-size:28px;margin-bottom:8px;}
+.cat-card h3{color:#87CEEB;font-size:12px;font-weight:bold;}
+.cat-card p{color:#555;font-size:10px;margin-top:3px;}
+.ai-tools-section{padding:60px 20px;background:linear-gradient(135deg,#060d1a,#062a2a);text-align:center;}
+.tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px;max-width:700px;margin:20px auto 0;}
+.tool-item{background:rgba(0,229,255,0.04);border:1px solid rgba(0,229,255,0.12);border-radius:12px;padding:14px;text-align:center;cursor:pointer;transition:0.3s;}
+.tool-item:hover{background:rgba(0,229,255,0.1);border-color:#00E5FF;}
+.tool-item .icon{font-size:22px;margin-bottom:6px;}
+.tool-item p{color:#87CEEB;font-size:11px;}
+.trending{padding:60px 20px;text-align:center;}
+.trending-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:15px;max-width:800px;margin:20px auto 0;}
+.trending-card{background:linear-gradient(135deg,#0a1628,#062a2a);border:1px solid rgba(0,229,255,0.12);border-radius:15px;padding:20px;text-align:left;cursor:pointer;transition:0.3s;}
+.trending-card:hover{border-color:#00E5FF;transform:translateY(-3px);}
+.trending-tag{font-size:10px;font-weight:bold;padding:3px 10px;border-radius:8px;display:inline-block;margin-bottom:10px;}
+.tag-learn{background:rgba(0,229,255,0.1);color:#00E5FF;}
+.tag-exam{background:rgba(255,165,0,0.1);color:orange;}
+.tag-ai{background:rgba(155,89,182,0.1);color:#9b59b6;}
+.trending-card h3{color:white;font-size:14px;margin-bottom:6px;}
+.trending-card p{color:#aaa;font-size:12px;}
+.membership{padding:60px 20px;text-align:center;background:linear-gradient(135deg,#060d1a,#062a2a);}
+.plans{display:flex;flex-wrap:wrap;justify-content:center;gap:20px;margin-top:25px;}
+.plan{background:linear-gradient(135deg,#0a1628,#062a2a);border:1px solid rgba(0,229,255,0.15);border-radius:20px;padding:25px 20px;width:200px;transition:0.3s;}
+.plan:hover{transform:translateY(-5px);}
 .plan.popular{border-color:#00E5FF;position:relative;}
-.plan.popular::before{content:'Popular';position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#00E5FF;color:#060d1a;padding:3px 15px;border-radius:10px;font-size:11px;font-weight:bold;}
-.plan h3{color:#00E5FF;font-size:18px;margin-bottom:5px;}
-.plan .price{font-size:28px;font-weight:bold;color:white;margin:10px 0;}
+.plan.popular::before{content:'⭐ Popular';position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(90deg,#00E5FF,#00897B);color:#060d1a;padding:4px 15px;border-radius:10px;font-size:11px;font-weight:bold;white-space:nowrap;}
+.plan h3{color:#00E5FF;font-size:17px;margin-bottom:8px;}
+.plan .price{font-size:26px;font-weight:bold;color:white;margin:8px 0;}
 .plan .price span{font-size:13px;color:#aaa;}
-.plan ul{list-style:none;text-align:left;margin:15px 0;}
-.plan ul li{color:#aaa;font-size:12px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
+.plan ul{list-style:none;text-align:left;margin:12px 0;}
+.plan ul li{color:#aaa;font-size:12px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.04);}
 .plan ul li::before{content:'✓ ';color:#00E5FF;}
-.plan-btn{width:100%;padding:10px;background:linear-gradient(90deg,#00E5FF,#00897B);color:#060d1a;border:none;border-radius:10px;font-weight:bold;cursor:pointer;margin-top:15px;font-size:13px;}
-.news-section{padding:60px 20px;background:rgba(0,229,255,0.02);}
-.news-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:15px;max-width:800px;margin:20px auto 0;}
-.news-card{background:linear-gradient(135deg,#0a1628,#062a2a);border:1px solid rgba(0,229,255,0.15);border-radius:12px;padding:20px;}
-.news-tag{background:rgba(0,229,255,0.1);color:#00E5FF;font-size:11px;padding:3px 10px;border-radius:10px;display:inline-block;margin-bottom:10px;}
-.news-card h4{color:white;font-size:14px;margin-bottom:8px;}
-.news-card p{color:#aaa;font-size:12px;}
-footer{background:#040a14;padding:40px 20px;border-top:1px solid rgba(0,229,255,0.1);}
-.footer-logo{font-size:24px;font-weight:bold;background:linear-gradient(90deg,#00E5FF,#00897B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:5px;}
-.footer-tagline{color:#555;font-size:12px;margin-bottom:20px;}
-.footer-links{display:flex;flex-wrap:wrap;gap:15px;margin-bottom:20px;}
-.footer-links a{color:#aaa;text-decoration:none;font-size:13px;}
-.footer-links a:hover{color:#00E5FF;}
-.footer-bottom{color:#333;font-size:12px;border-top:1px solid rgba(255,255,255,0.05);padding-top:15px;}
+.plan-btn{width:100%;padding:10px;background:linear-gradient(90deg,#00E5FF,#00897B);color:#060d1a;border:none;border-radius:10px;font-weight:bold;cursor:pointer;margin-top:12px;font-size:13px;}
+footer{background:#040a14;padding:40px 20px;border-top:1px solid rgba(0,229,255,0.08);}
+.footer-top{display:flex;flex-wrap:wrap;gap:30px;margin-bottom:25px;justify-content:center;}
+.footer-col h4{color:#00E5FF;font-size:14px;margin-bottom:12px;}
+.footer-col a{display:block;color:#aaa;text-decoration:none;font-size:13px;margin-bottom:6px;}
+.footer-col a:hover{color:#00E5FF;}
+.footer-bottom{text-align:center;border-top:1px solid rgba(255,255,255,0.05);padding-top:20px;color:#333;font-size:12px;}
 </style>
 </head>
 <body>
 <nav>
-<div class="logo">MoniX</div>
+<a href="index.html" class="logo">MoniX</a>
 <div class="nav-links">
 <a href="learn.html">Learn</a>
-<a href="tools.html">AI Tools</a>
+<a href="tools.html">AI Lab</a>
 <a href="exams.html">Exams</a>
-<a href="login.html">Login</a>
+<a href="news.html">News</a>
+<a href="store.html">Store</a>
+<a href="login.html" class="login-link">Login</a>
 </div>
 </nav>
 
 <div class="hero">
-<div class="hero-badge">🚀 India's Digital Ecosystem</div>
+<div class="hero-badge">🚀 India's #1 Digital Ecosystem</div>
 <h1>Learn • Create<br>Earn • Grow</h1>
-<p class="hero-tagline">One Platform — Unlimited Opportunities</p>
-<div class="hero-pills">
-<span class="pill">📚 Learning</span>
-<span class="pill">🤖 AI Tools</span>
-<span class="pill">🎯 Exams</span>
-<span class="pill">📰 News</span>
-<span class="pill">🏆 Certificates</span>
+<p class="hero-sub">One Platform — Unlimited Opportunities for Every Student & Professional</p>
+
+<div class="search-container">
+<div class="search-box">
+<input type="text" placeholder="Search courses, AI tools, exams..." id="hero-search"/>
+<button onclick="heroSearch()">Search</button>
 </div>
+</div>
+
+<div class="hero-pills">
+<span class="pill" onclick="window.location.href='learn.html'">📚 Python</span>
+<span class="pill" onclick="window.location.href='exams.html'">🎯 SSC CGL</span>
+<span class="pill" onclick="window.location.href='tools.html'">🤖 AI Chat</span>
+<span class="pill" onclick="window.location.href='learn.html'">🛡️ Ethical Hacking</span>
+<span class="pill" onclick="window.location.href='exams.html'">🏦 Banking</span>
+<span class="pill" onclick="window.location.href='tools.html'">💻 Code Generator</span>
+</div>
+
 <div class="hero-btns">
-<a href="login.html" class="btn-primary">Get Started Free</a>
-<a href="tools.html" class="btn-secondary">Explore Tools</a>
+<a href="login.html" class="btn-primary">🚀 Get Started Free</a>
+<a href="tools.html" class="btn-secondary">⚡ Explore AI Tools</a>
 </div>
 </div>
 
 <div class="stats">
 <div class="stat"><h2>30+</h2><p>AI Tools</p></div>
+<div class="stat"><h2>100+</h2><p>Courses</p></div>
 <div class="stat"><h2>Free</h2><p>Always</p></div>
-<div class="stat"><h2>100%</h2><p>Trusted</p></div>
 <div class="stat"><h2>24/7</h2><p>Access</p></div>
+<div class="stat"><h2>🇮🇳</h2><p>Made in India</p></div>
 </div>
 
-<div class="section">
-<p class="section-title">📚 What You Can Learn</p>
-<p class="section-sub">School to College — Everything in One Place</p>
-<div class="cards">
-<div class="card"><div class="card-icon">🏫</div><h3>Class 1-12</h3><p>NCERT & More</p></div>
-<div class="card"><div class="card-icon">🎓</div><h3>College</h3><p>BCA, BSc, BCom</p></div>
-<div class="card"><div class="card-icon">💻</div><h3>Coding</h3><p>Python, Web, AI</p></div>
-<div class="card"><div class="card-icon">🛡️</div><h3>Cyber Security</h3><p>Ethical Hacking</p></div>
-<div class="card"><div class="card-icon">📊</div><h3>Data Science</h3><p>ML & Analytics</p></div>
-<div class="card"><div class="card-icon">🎨</div><h3>Design</h3><p>UI/UX & Graphics</p></div>
+<div class="ai-assistant">
+<div class="ai-box">
+<div class="ai-header">
+<span style="font-size:28px;">🤖</span>
+<h3>Moni AI Assistant</h3>
 </div>
+<p style="color:#aaa;font-size:13px;margin-bottom:15px;">Ask me anything — Learning, Exams, Career, Coding!</p>
+<div class="ai-input-row">
+<input type="text" id="moni-input" placeholder="Ask Moni AI..." onkeypress="if(event.key==='Enter')askMoni()"/>
+<button onclick="askMoni()">Ask →</button>
 </div>
-
-<div class="ai-section">
-<p class="section-title">🤖 AI Tools Hub</p>
-<p class="section-sub">30+ Powerful AI Tools — Free to Use</p>
-<div class="ai-grid">
-<div class="ai-card"><div class="icon">💬</div><p>Moni AI Chat</p></div>
-<div class="ai-card"><div class="icon">📝</div><p>Notes Generator</p></div>
-<div class="ai-card"><div class="icon">❓</div><p>Homework Helper</p></div>
-<div class="ai-card"><div class="icon">💻</div><p>Code Generator</p></div>
-<div class="ai-card"><div class="icon">✍️</div><p>Essay Writer</p></div>
-<div class="ai-card"><div class="icon">📄</div><p>Resume Builder</p></div>
-<div class="ai-card"><div class="icon">🖼️</div><p>Image Generator</p></div>
-<div class="ai-card"><div class="icon">🌐</div><p>Translator</p></div>
-<div class="ai-card"><div class="icon">📊</div><p>Quiz Maker</p></div>
-<div class="ai-card"><div class="icon">🔍</div><p>AI Search</p></div>
+<div class="ai-suggestions">
+<span class="ai-suggest" onclick="askSuggest('SSC CGL kaise prepare karein?')">SSC CGL tips</span>
+<span class="ai-suggest" onclick="askSuggest('Python kaise seekhein?')">Learn Python</span>
+<span class="ai-suggest" onclick="askSuggest('Best career options 2026?')">Career advice</span>
+<span class="ai-suggest" onclick="askSuggest('Ethical hacking kya hai?')">Ethical Hacking</span>
+</div>
+<div class="ai-response" id="moni-response"></div>
 </div>
 </div>
 
 <div class="section">
-<p class="section-title">🎯 Exam Preparation</p>
-<p class="section-sub">Government & Board Exams</p>
-<div class="cards">
-<div class="card"><div class="card-icon">🏛️</div><h3>SSC</h3><p>CGL, CHSL, MTS</p></div>
-<div class="card"><div class="card-icon">🚂</div><h3>Railway</h3><p>RRB, NTPC</p></div>
-<div class="card"><div class="card-icon">🏦</div><h3>Banking</h3><p>IBPS, SBI</p></div>
-<div class="card"><div class="card-icon">📋</div><h3>UPSC</h3><p>IAS, IPS</p></div>
-<div class="card"><div class="card-icon">📚</div><h3>CBSE</h3><p>Class 10 & 12</p></div>
-<div class="card"><div class="card-icon">🎯</div><h3>State PSC</h3><p>All States</p></div>
+<span class="section-badge">📚 Learn</span>
+<p class="section-title">What Do You Want to Learn?</p>
+<p class="section-sub">School • College • Coding • Government Exams • Skills</p>
+<div class="categories-grid">
+<a href="learn.html" class="cat-card"><div class="icon">🏫</div><h3>Class 1-12</h3><p>NCERT & Board</p></a>
+<a href="learn.html" class="cat-card"><div class="icon">🎓</div><h3>College</h3><p>BCA, BSc, BCom</p></a>
+<a href="learn.html" class="cat-card"><div class="icon">💻</div><h3>Coding</h3><p>Python, Web, AI</p></a>
+<a href="learn.html" class="cat-card"><div class="icon">🛡️</div><h3>Cyber Security</h3><p>Ethical Hacking</p></a>
+<a href="exams.html" class="cat-card"><div class="icon">🏛️</div><h3>Govt Exams</h3><p>SSC, Railway, Bank</p></a>
+<a href="learn.html" class="cat-card"><div class="icon">🤖</div><h3>AI & ML</h3><p>Machine Learning</p></a>
+<a href="learn.html" class="cat-card"><div class="icon">🎨</div><h3>Design</h3><p>UI/UX, Graphics</p></a>
+<a href="learn.html" class="cat-card"><div class="icon">📊</div><h3>Data Science</h3><p>Analytics & ML</p></a>
+</div>
+</div>
+
+<div class="ai-tools-section">
+<span class="section-badge">🤖 AI Lab</span>
+<p class="section-title">30+ AI Tools — Free</p>
+<p class="section-sub">Homework Helper • Code Generator • Essay Writer • Resume Builder & More</p>
+<div class="tools-grid">
+<div class="tool-item" onclick="window.location.href='tools.html'"><div class="icon">💬</div><p>Moni AI Chat</p></div>
+<div class="tool-item" onclick="window.location.href='tools.html'"><div class="icon">📝</div><p>Notes Generator</p></div>
+<div class="tool-item" onclick="window.location.href='tools.html'"><div class="icon">❓</div><p>Homework Helper</p></div>
+<div class="tool-item" onclick="window.location.href='tools.html'"><div class="icon">💻</div><p>Code Generator</p></div>
+<div class="tool-item" onclick="window.location.href='tools.html'"><div class="icon">✍️</div><p>Essay Writer</p></div>
+<div class="tool-item" onclick="window.location.href='tools.html'"><div class="icon">📄</div><p>Resume Builder</p></div>
+<div class="tool-item" onclick="window.location.href='tools.html'"><div class="icon">🌐</div><p>Translator</p></div>
+<div class="tool-item" onclick="window.location.href='tools.html'"><div class="icon">🔑</div><p>Hash Generator</p></div>
+<div class="tool-item" onclick="window.location.href='tools.html'"><div class="icon">🛡️</div><p>Password Check</p></div>
+<div class="tool-item" onclick="window.location.href='tools.html'"><div class="icon">📊</div><p>Base64</p></div>
+</div>
+</div>
+
+<div class="trending">
+<span class="section-badge">🔥 Trending</span>
+<p class="section-title">Trending on MoniX</p>
+<p class="section-sub">Most popular courses, tools & news</p>
+<div class="trending-grid">
+<div class="trending-card" onclick="window.location.href='learn.html'"><span class="trending-tag tag-learn">📚 Course</span><h3>Python Programming — Beginner to Advanced</h3><p>Most popular coding course on MoniX</p></div>
+<div class="trending-card" onclick="window.location.href='exams.html'"><span class="trending-tag tag-exam">🎯 Exam</span><h3>SSC CGL 2026 — Complete Preparation</h3><p>Notification released — start preparing now!</p></div>
+<div class="trending-card" onclick="window.location.href='tools.html'"><span class="trending-tag tag-ai">🤖 AI Tool</span><h3>Moni AI Chat — Ask Anything</h3><p>Most used AI tool on MoniX platform</p></div>
+<div class="trending-card" onclick="window.location.href='learn.html'"><span class="trending-tag tag-learn">📚 Course</span><h3>Ethical Hacking — Basics to Advanced</h3><p>Cybersecurity is the #1 skill for 2026</p></div>
+<div class="trending-card" onclick="window.location.href='news.html'"><span class="trending-tag tag-ai">🤖 News</span><h3>AI Revolution in Education 2026</h3><p>How AI is changing the way India learns</p></div>
+<div class="trending-card" onclick="window.location.href='store.html'"><span class="trending-tag tag-learn">🛒 Store</span><h3>SSC CGL Complete Guide — ₹99</h3><p>Best selling preparation guide on MoniX</p></div>
 </div>
 </div>
 
 <div class="membership">
-<p class="section-title">👑 Membership Plans</p>
-<p class="section-sub">Choose Your Plan</p>
+<span class="section-badge">👑 Plans</span>
+<p class="section-title">Choose Your Plan</p>
+<p class="section-sub">Start free — Upgrade anytime</p>
 <div class="plans">
 <div class="plan">
-<h3>Explorer</h3>
+<h3>🆓 Explorer</h3>
 <div class="price">Free<span>/month</span></div>
 <ul>
 <li>Basic Access</li>
 <li>Limited AI Tools</li>
 <li>Basic Notes</li>
-<li>Community Access</li>
+<li>Mock Tests</li>
 </ul>
-<button class="plan-btn">Get Started</button>
+<button class="plan-btn" onclick="window.location.href='login.html'">Get Started</button>
 </div>
 <div class="plan popular">
-<h3>Creator</h3>
+<h3>🚀 Creator</h3>
 <div class="price">₹99<span>/month</span></div>
 <ul>
 <li>More AI Tools</li>
-<li>More Downloads</li>
-<li>Priority Support</li>
+<li>All Downloads</li>
 <li>Ad Free</li>
+<li>Priority Support</li>
 </ul>
-<button class="plan-btn">Get Creator</button>
+<button class="plan-btn" onclick="window.location.href='login.html'">Get Creator</button>
 </div>
 <div class="plan">
-<h3>Master</h3>
+<h3>👑 Master</h3>
 <div class="price">₹199<span>/month</span></div>
 <ul>
 <li>Full AI Access</li>
@@ -179,47 +244,75 @@ footer{background:#040a14;padding:40px 20px;border-top:1px solid rgba(0,229,255,
 <li>Certificates</li>
 <li>Early Features</li>
 </ul>
-<button class="plan-btn">Get Master</button>
-</div>
-</div>
-</div>
-
-<div class="news-section">
-<p class="section-title" style="text-align:center;">📰 Latest News</p>
-<p class="section-sub" style="text-align:center;">Stay Updated</p>
-<div class="news-grid">
-<div class="news-card">
-<span class="news-tag">Tech</span>
-<h4>AI Revolution in Education 2026</h4>
-<p>How AI is transforming the way students learn across India...</p>
-</div>
-<div class="news-card">
-<span class="news-tag">Exam</span>
-<h4>SSC CGL 2026 Notification Out</h4>
-<p>Staff Selection Commission releases official notification for CGL 2026...</p>
-</div>
-<div class="news-card">
-<span class="news-tag">Career</span>
-<h4>Top 10 In-Demand Skills 2026</h4>
-<p>Cybersecurity, AI, and Data Science top the list of most sought skills...</p>
+<button class="plan-btn" onclick="window.location.href='login.html'">Get Master</button>
 </div>
 </div>
 </div>
 
 <footer>
-<div class="footer-logo">MoniX</div>
-<p class="footer-tagline">Learn • Create • Earn • Grow</p>
-<div class="footer-links">
-<a href="#">About</a>
-<a href="#">Learn</a>
-<a href="#">AI Tools</a>
-<a href="#">Exams</a>
-<a href="#">News</a>
-<a href="#">Privacy</a>
-<a href="#">Terms</a>
-<a href="#">Contact</a>
+<div class="footer-top">
+<div class="footer-col">
+<h4>MoniX</h4>
+<a href="index.html">Home</a>
+<a href="learn.html">Learn</a>
+<a href="tools.html">AI Lab</a>
+<a href="exams.html">Exams</a>
 </div>
-<p class="footer-bottom">© 2026 MoniX — India's Digital Ecosystem — All Rights Reserved</p>
+<div class="footer-col">
+<h4>Products</h4>
+<a href="store.html">Store</a>
+<a href="news.html">News</a>
+<a href="dashboard.html">Dashboard</a>
+<a href="profile.html">Profile</a>
+</div>
+<div class="footer-col">
+<h4>Company</h4>
+<a href="#">About Us</a>
+<a href="#">Contact</a>
+<a href="#">Privacy Policy</a>
+<a href="#">Terms of Service</a>
+</div>
+<div class="footer-col">
+<h4>Follow Us</h4>
+<a href="#">📱 Instagram</a>
+<a href="#">▶️ YouTube</a>
+<a href="#">💬 Telegram</a>
+<a href="#">📢 WhatsApp</a>
+</div>
+</div>
+<div class="footer-bottom">
+<p>© 2026 MoniX — India's Digital Ecosystem — All Rights Reserved</p>
+<p style="margin-top:5px;color:#222;">Made with ❤️ in India 🇮🇳</p>
+</div>
 </footer>
-</body>
-                                                                 </html>
+
+<script>
+function heroSearch(){
+var q=document.getElementById('hero-search').value.toLowerCase();
+if(!q)return;
+if(q.includes('python')||q.includes('coding')||q.includes('web')||q.includes('hack'))window.location.href='learn.html';
+else if(q.includes('ssc')||q.includes('upsc')||q.includes('bank')||q.includes('exam'))window.location.href='exams.html';
+else if(q.includes('ai')||q.includes('tool')||q.includes('resume')||q.includes('essay'))window.location.href='tools.html';
+else if(q.includes('news')||q.includes('current'))window.location.href='news.html';
+else if(q.includes('store')||q.includes('notes')||q.includes('book'))window.location.href='store.html';
+else window.location.href='learn.html';
+}
+
+function askMoni(){
+var q=document.getElementById('moni-input').value.trim();
+var r=document.getElementById('moni-response');
+if(!q)return;
+r.style.display='block';
+r.textContent='🤖 Moni AI: '+getMoniResponse(q);
+}
+
+function askSuggest(q){
+document.getElementById('moni-input').value=q;
+askMoni();
+}
+
+function getMoniResponse(q){
+q=q.toLowerCase();
+if(q.includes('ssc')||q.includes('cgl'))return 'SSC CGL 2026 ke liye:\n✅ Math & Reasoning daily practice karo\n✅ English grammar strong karo\n✅ Current affairs daily padhо\n✅ Previous year papers solve karo\n✅ MoniX Exams section pe mock tests do!\n\nVisit: MoniX → Exams → SSC';
+if(q.includes('python'))return 'Python seekhne ke liye:\n✅ Basics se shuru karo — variables, loops\n✅ Daily 1 hour practice karo\n✅ Projects banao — calculator, games\n✅ MoniX Learn pe Python course free hai!\n\nVisit: MoniX → Learn → Python';
+if(q.includes('hack')||q.includes('cyber'))return 'Ethical Hacking ke liye:\n✅ Linux basics seekho pehle\n✅ Networking samjho\n✅ Python programming sikh lo\n✅ Termux pe practice karo\n✅ MoniX Cyber Security course free hai!\n\nVisit: MoniX → Learn → Cybe
