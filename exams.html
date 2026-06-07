@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MoniX — Exams</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#060d1a;color:white;font-family:Arial,sans-serif;}
+nav{background:rgba(6,13,26,0.95);padding:15px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(0,229,255,0.2);position:sticky;top:0;z-index:100;}
+.logo{font-size:24px;font-weight:bold;background:linear-gradient(90deg,#00E5FF,#00897B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none;}
+.nav-links a{color:#aaa;text-decoration:none;margin-left:15px;font-size:13px;}
+.nav-links a:hover{color:#00E5FF;}
+.hero{text-align:center;padding:50px 20px;background:linear-gradient(135deg,#060d1a,#0a1628,#062a2a);}
+.hero-badge{background:rgba(0,229,255,0.1);border:1px solid rgba(0,229,255,0.3);border-radius:20px;padding:6px 15px;font-size:12px;color:#00E5FF;display:inline-block;margin-bottom:15px;}
+.hero h1{font-size:36px;font-weight:bold;background:linear-gradient(135deg,#ffffff,#00E5FF,#00897B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px;}
+.hero p{color:#aaa;font-size:14px;}
+.tabs{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;padding:25px 20px 10px;}
+.tab{padding:8px 18px;border-radius:20px;border:1px solid rgba(0,229,255,0.2);color:#aaa;cursor:pointer;font-size:13px;background:transparent;transition:0.3s;}
+.tab.active{background:linear-gradient(90deg,#00E5FF,#00897B);color:#060d1a;font-weight:bold;border:none;}
+.section{padding:20px;display:none;max-width:900px;margin:0 auto;}
+.section.active{display:block;}
+.section-title{color:#00E5FF;font-size:18px;margin-bottom:20px;border-left:3px solid #00897B;padding-left:10px;}
+.exam-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:15px;}
+.exam-card{background:linear-gradient(135deg,#0a1628,#062a2a);border:1px solid rgba(0,229,255,0.15);border-radius:15px;padding:20px;cursor:pointer;transition:0.3s;}
+.exam-card:hover{border-color:#00E5FF;transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,229,255,0.15);}
+.exam-icon{font-size:35px;margin-bottom:10px;}
+.exam-card h3{color:#00E5FF;font-size:15px;margin-bottom:5px;}
+.exam-card p{color:#aaa;font-size:12px;margin-bottom:12px;}
+.exam-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px;}
+.exam-tag{background:rgba(0,229,255,0.08);color:#87CEEB;font-size:10px;padding:3px 8px;border-radius:8px;}
+.exam-btn{width:100%;padding:9px;background:linear-gradient(90deg,#00E5FF,#00897B);color:#060d1a;border:none;border-radius:8px;font-weight:bold;cursor:pointer;font-size:13px;}
+.topic-list{display:flex;flex-direction:column;gap:10px;}
+.topic-item{background:linear-gradient(135deg,#0a1628,#062a2a);border:1px solid rgba(0,229,255,0.15);border-radius:12px;padding:15px;display:flex;align-items:center;gap:15px;cursor:pointer;transition:0.3s;}
+.topic-item:hover{border-color:#00E5FF;}
+.topic-icon{font-size:28px;min-width:40px;text-align:center;}
+.topic-info h3{color:white;font-size:14px;margin-bottom:3px;}
+.topic-info p{color:#aaa;font-size:12px;}
+.topic-arrow{margin-left:auto;color:#00E5FF;}
+.quiz-box{background:linear-gradient(135deg,#0a1628,#062a2a);border:1px solid rgba(0,229,255,0.2);border-radius:15px;padding:25px;margin-top:20px;}
+.quiz-box h3{color:#00E5FF;font-size:18px;margin-bottom:20px;}
+.question{margin-bottom:20px;}
+.question p{color:white;font-size:14px;margin-bottom:12px;}
+.options{display:flex;flex-direction:column;gap:8px;}
+.option{padding:10px 15px;background:rgba(0,229,255,0.05);border:1px solid rgba(0,229,255,0.15);border-radius:8px;cursor:pointer;font-size:13px;color:#aaa;transition:0.3s;}
+.option:hover{border-color:#00E5FF;color:white;}
+.option.correct{background:rgba(0,229,255,0.15);border-color:#00E5FF;color:#00E5FF;}
+.option.wrong{background:rgba(255,68,68,0.1);border-color:#ff4444;color:#ff4444;}
+.quiz-result{text-align:center;padding:20px;display:none;}
+.quiz-result h2{font-size:28px;background:linear-gradient(90deg,#00E5FF,#00897B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px;}
+.quiz-result p{color:#aaa;}
+.submit-quiz{width:100%;padding:12px;background:linear-gradient(90deg,#00E5FF,#00897B);color:#060d1a;border:none;border-radius:10px;font-weight:bold;cursor:pointer;font-size:15px;margin-top:15px;}
+.back-btn{background:transparent;border:1px solid #00E5FF;color:#00E5FF;padding:8px 15px;border-radius:8px;cursor:pointer;margin-bottom:20px;font-size:13px;}
+.content-area{background:linear-gradient(135deg,#0a1628,#062a2a);border:1px solid rgba(0,229,255,0.2);border-radius:15px;padding:25px;margin-top:10px;}
+.content-area h2{color:#00E5FF;margin-bottom:15px;}
+.content-area p,.content-area li{color:#aaa;font-size:14px;line-height:1.8;margin-bottom:8px;}
+.content-area h3{color:#87CEEB;margin:15px 0 8px;}
+.content-area ul{padding-left:20px;}
+footer{background:#040a14;padding:30px 20px;border-top:1px solid rgba(0,229,255,0.1);text-align:center;margin-top:40px;}
+footer p{color:#333;font-size:12px;}
+footer a{color:#00E5FF;margin:0 8px;text-decoration:none;font-size:12px;}
+</style>
+</head>
+<body>
+<nav>
+<a href="index.html" class="logo">MoniX</a>
+<div class="nav-links">
+<a href="index.html">Home</a>
+<a href="learn.html">Learn</a>
+<a href="tools.html">AI Tools</a>
+<a href="login.html">Login</a>
+</div>
+</nav>
+
+<div class="hero">
+<div class="hero-badge">🎯 Exam Preparation</div>
+<h1>MoniX Exams</h1>
+<p>Government Exams • Board Exams • Mock Tests</p>
+</div>
+
+<div class="tabs">
+<div class="tab active" onclick="showTab('govt',this)">🏛️ Govt Exams</div>
+<div class="tab" onclick="showTab('board',this)">📚 Board Exams</div>
+<div class="tab" onclick="showTab('mock',this)">📝 Mock Test</div>
+<div class="tab" onclick="showTab('current',this)">📰 Current Affairs</div>
+</div>
+
+<!-- Govt Exams -->
+<div class="section active" id="govt">
+<p class="section-title">🏛️ Government Exams</p>
+<div class="exam-grid">
+<div class="exam-card" onclick="openExam('ssc')">
+<div class="exam-icon">🏛️</div>
+<h3>SSC Exams</h3>
+<p>Staff Selection Commission</p>
+<div class="exam-tags"><span class="exam-tag">CGL</span><span class="exam-tag">CHSL</span><span class="exam-tag">MTS</span><span class="exam-tag">GD</span></div>
+<button class="exam-btn">Prepare Now</button>
+</div>
+<div class="exam-card" onclick="openExam('railway')">
+<div class="exam-icon">🚂</div>
+<h3>Railway Exams</h3>
+<p>Indian Railways Recruitment</p>
+<div class="exam-tags"><span class="exam-tag">RRB NTPC</span><span class="exam-tag">Group D</span><span class="exam-tag">ALP</span></div>
+<button class="exam-btn">Prepare Now</button>
+</div>
+<div class="exam-card" onclick="openExam('banking')">
+<div class="exam-icon">🏦</div>
+<h3>Banking Exams</h3>
+<p>Bank PO & Clerk</p>
+<div class="exam-tags"><span class="exam-tag">IBPS PO</span><span class="exam-tag">SBI PO</span><span class="exam-tag">Clerk</span></div>
+<button class="exam-btn">Prepare Now</button>
+</div>
+<div class="exam-card" onclick="openExam('upsc')">
+<div class="exam-icon">📋</div>
+<h3>UPSC</h3>
+<p>Civil Services Examination</p>
+<div class="exam-tags"><span class="exam-tag">IAS</span><span class="exam-tag">IPS</span><span class="exam-tag">IFS</span></div>
+<button class="exam-btn">Prepare Now</button>
+</div>
+<div class="exam-card" onclick="openExam('defence')">
+<div class="exam-icon">⚔️</div>
+<h3>Defence Exams</h3>
+<p>Army, Navy, Air Force</p>
+<div class="exam-tags"><span class="exam-tag">NDA</span><span class="exam-tag">CDS</span><span class="exam-tag">AFCAT</span></div>
+<button class="exam-btn">Prepare Now</button>
+</div>
+<div class="exam-card" onclick="openExam('police')">
+<div class="exam-icon">👮</div>
+<h3>Police Exams</h3>
+<p>State Police Recruitment</p>
+<div class="exam-tags"><span class="exam-tag">SI</span><span class="exam-tag">Constable</span><span class="exam-tag">ASI</span></div>
+<button class="exam-btn">Prepare Now</button>
+</div>
+</div>
+</div>
+
+<!-- Board Exams -->
+<div class="section" id="board">
+<p class="section-title">📚 Board Exams</p>
+<div class="topic-list">
+<div class="topic-item" onclick="openExam('cbse10')"><div class="topic-icon">📗</div><div class="topic-info"><h3>CBSE Class 10</h3><p>Math, Science, English, Social Science, Hindi</p></div><div class="topic-arrow">→</div></div>
+<div class="topic-item" onclick="openExam('cbse12')"><div class="topic-icon">📘</div><div class="topic-info"><h3>CBSE Class 12</h3><p>PCM, PCB, Commerce, Arts streams</p></div><div class="topic-arrow">→</div></div>
+<div class="topic-item"><div class="topic-icon">📙</div><div class="topic-info"><h3>State Boards</h3><p>UP Board, MP Board, Maharashtra, Rajasthan</p></div><div class="topic-arrow">→</div></div>
+<div class="topic-item"><div class="topic-icon">🎯</div><div class="topic-info"><h3>JEE Preparation</h3><p>Physics, Chemistry, Mathematics</p></div><div class="topic-arrow">→</div></div>
+<div class="topic-item"><div class="topic-icon">🏥</div><div class="topic-info"><h3>NEET Preparation</h3><p>Biology, Chemistry, Physics</p></div><div class="topic-arrow">→</div></div>
+</div>
+</div>
+
+<!-- Mock Test -->
+<div class="section" id="mock">
+<p class="section-title">📝 Mock Tests</p>
+<div class="exam-grid">
+<div class="exam-card" onclick="startQuiz('gk')">
+<div class="exam-icon">🌍</div>
+<h3>General Knowledge</h3>
+<p>10 Questions • 10 Minutes</p>
+<div class="exam-tags"><span class="exam-tag">Free</span><span class="exam-tag">10 Qs</span></div>
+<button class="exam-btn">Start Test</button>
+</div>
+<div class="exam-card" onclick="startQuiz('math')">
+<div class="exam-icon">📐</div>
+<h3>Mathematics</h3>
+<p>10 Questions • 15 Minutes</p>
+<div class="exam-tags"><span class="exam-tag">Free</span><span class="exam-tag">10 Qs</span></div>
+<button class="exam-btn">Start Test</button>
+</div>
+<div class="exam-card" onclick="startQuiz('english')">
+<div class="exam-icon">📖</div>
+<h3>English</h3>
+<p>10 Questions • 10 Minutes</p>
+<div class="exam-tags"><span class="exam-tag">Free</span><span class="exam-tag">10 Qs</span></div>
+<button class="exam-btn">Start Test</button>
+</div>
+<div class="exam-card" onclick="startQuiz('computer')">
+<div class="exam-icon">💻</div>
+<h3>Computer Science</h3>
+<p>10 Questions • 10 Minutes</p>
+<div class="exam-tags"><span class="exam-tag">Free</span><span class="exam-tag">10 Qs</span></div>
+<button class="exam-btn">Start Test</button>
+</div>
+</div>
+</div>
+
+<!-- Current Affairs -->
+<div class="section" id="current">
+<p class="section-title">📰 Current Affairs 2026</p>
+<div class="topic-list">
+<div class="topic-item"><div class="topic-icon">🌍</div><div class="topic-info"><h3>International Affairs</h3><p>World events, treaties, organizations</p></div><div class="topic-arrow">→</div></div>
+<div class="topic-item"><div class="topic-icon">🇮🇳</div><div class="topic-info"><h3>National Affairs</h3><p>India politics, economy, social issues</p></div><div class="topic-arrow">→</div></div>
+<div class="topic-item"><div class="topic-icon">📊</div><div class="topic-info"><h3>Economy & Finance</h3><p>Budget, GDP, banking updates</p></div><div class="topic-arrow">→</div></div>
+<div class="topic-item"><div class="topic-icon">🏆</div><div class="topic-info"><h3>Sports</h3><p>Olympics, Cricket, Football updates</p></div><div class="topic-arrow">→</div></div>
+<div class="topic-item"><div class="topic-icon">🔬</div><div class="topic-info"><h3>Science & Technology</h3><p>Space, AI, discoveries</p></div><div class="topic-arrow">→</div></div>
+</div>
+</div>
+
+<!-- Exam Content View -->
+<div class="section" id="exam-view">
+<button class="back-btn" onclick="goBack()">← Back</button>
+<div class="content-area" id="exam-content"></div>
+</div>
+
+<!-- Quiz View -->
+<div class="section" id="quiz-view">
+<button class="back-btn" onclick="goBack()">← Back</button>
+<div class="quiz-box">
+<h3 id="quiz-title">Mock Test</h3>
+<div id="quiz-questions"></div>
+<div class="quiz-result" id="quiz-result">
+<h2 id="result-score"></h2>
+<p id="result-msg"></p>
+<button class="submit-quiz" onclick="goBack()">Try Another Test</button>
+</div>
+<button class="submit-quiz" id="submit-btn" onclick="submitQuiz()">Submit Test</button>
+</div>
+</div>
+
+<footer>
+<p>© 2026 MoniX — India's Digital Ecosystem</p>
+<a href="index.html">Home</a>
+<a href="learn.html">Learn</a>
+<a href="#">Privacy</a>
+</footer>
+
+<script>
+var currentTab='govt';
+var quizData={
+gk:[
+{q:'What is the capital of India?',opts:['Mumbai','Delhi','Kolkata','Chennai'],ans:1},
+{q:'Who is the father of Indian Constitution?',opts:['Gandhi','Nehru','Ambedkar','Patel'],ans:2},
+{q:'Which planet is closest to Sun?',opts:['Venus','Earth','Mercury','Mars'],ans:2},
+{q:'What is the currency of Japan?',opts:['Won','Yuan','Yen','Dollar'],ans:2},
+{q:'How many states are in India?',opts:['28','29','30','31'],ans:0}
+],
+math:[
+{q:'What is 15% of 200?',opts:['25','30','35','40'],ans:1},
+{q:'Square root of 144 is?',opts:['11','12','13','14'],ans:1},
+{q:'2³ × 2² = ?',opts:['2⁵','2⁶','4⁵','8³'],ans:0},
+{q:'Area of circle with r=7 is? (π=22/7)',opts:['144','154','164','174'],ans:1},
+{q:'LCM of 12 and 18 is?',opts:['24','36','48','72'],ans:1}
+],
+english:[
+{q:'Synonym of "Happy" is?',opts:['Sad','Angry','Joyful','Tired'],ans:2},
+{q:'Antonym of "Ancient" is?',opts:['Old','Modern','Historic','Classic'],ans:1},
+{q:'Correct spelling?',opts:['Accomodation','Accommodation','Acomodation','Acommodation'],ans:1},
+{q:'"She ___ to school every day." (go)',opts:['go','goes','going','gone'],ans:1},
+{q:'Plural of "Child" is?',opts:['Childs','Childes','Children','Childrens'],ans:2}
+],
+computer:[
+{q:'CPU stands for?',opts:['Central Processing Unit','Computer Processing Unit','Central Program Unit','Core Processing Unit'],ans:0},
+{q:'Which is NOT an input device?',opts:['Keyboard','Mouse','Monitor','Scanner'],ans:2},
+{q:'1 Byte = ? bits',opts:['4','6','8','16'],ans:2},
+{q:'HTML stands for?',opts:['Hyper Text Markup Language','High Text Markup Language','Hyper Transfer Markup Language','None'],ans:0},
+{q:'Which language is used for web styling?',opts:['HTML','CSS','PHP','Java'],ans:1}
+]};
+
+var examContent={
+ssc:{title:'🏛️ SSC Exam Preparation',content:`
+<h3>📌 About SSC</h3>
+<p>Staff Selection Commission conducts various exams for central government jobs.</p>
+<h3>📌 Major Exams</h3>
+<ul>
+<li>SSC CGL — Graduate Level posts</li>
+<li>SSC CHSL — 10+2 Level posts</li>
+<li>SSC MTS — Multi Tasking Staff</li>
+<li>SSC GD — General Duty Constable</li>
+</ul>
+<h3>📌 Syllabus</h3>
+<ul>
+<li>General Intelligence & Reasoning</li>
+<li>General Awareness</li>
+<li>Quantitative Aptitude</li>
+<li>English Comprehension</li>
+</ul>
+<h3>📌 Preparation Tips</h3>
+<ul>
+<li>Practice previous year papers</li>
+<li>Focus on speed & accuracy</li>
+<li>Daily current affairs reading</li>
+<li>Mock tests regularly</li>
+</ul>`},
+railway:{title:'🚂 Railway Exam Preparation',content:`
+<h3>📌 About Railway Exams</h3>
+<p>Indian Railways is one of the largest employers in India.</p>
+<h3>📌 Major Exams</h3>
+<ul>
+<li>RRB NTPC — Non-Technical Popular Categories</li>
+<li>RRB Group D — Track maintainer, Helper</li>
+<li>RRB ALP — Assistant Loco Pilot</li>
+</ul>
+<h3>📌 Syllabus</h3>
+<ul>
+<li>Mathematics</li>
+<li>General Intelligence & Reasoning</li>
+<li>General Science</li>
+<li>General Awareness</li>
+</ul>`},
+banking:{title:'🏦 Banking Exam Preparation',content:`
+<h3>📌 About Banking Exams</h3>
+<p>IBPS and SBI conduct exams for bank PO and clerk posts.</p>
+<h3>📌 Major Exams</h3>
+<ul>
+<li>IBPS PO — Probationary Officer</li>
+<li>IBPS Clerk — Clerical posts</li>
+<li>SBI PO — State Bank PO</li>
+<li>SBI Clerk — Junior Associate</li>
+</ul>
+<h3>📌 Syllabus</h3>
+<ul>
+<li>Quantitative Aptitude</li>
+<li>Reasoning Ability</li>
+<li>English Language</li>
+<li>Computer Knowledge</li>
+<li>General Awareness & Banking</li>
+</ul>`},
+upsc:{title:'📋 UPSC Preparation',content:`
+<h3>📌 About UPSC</h3>
+<p>Union Public Service Commission — India's premier central recruiting agency.</p>
+<h3>📌 Exam Stages</h3>
+<ul>
+<li>Prelims — Objective type</li>
+<li>Mains — Descriptive</li>
+<li>Interview — Personality test</li>
+</ul>
+<h3>📌 Key Subjects</h3>
+<ul>
+<li>Indian History & Culture</li>
+<li>Geography</li>
+<li>Indian Polity & Constitution</li>
+<li>Economy</li>
+<li>Environment & Ecology</li>
+<li>Current Affairs</li>
+</ul>`},
+defence:{title:'⚔️ Defence Exam Preparation',content:`
+<h3>📌 Defence Exams</h3>
+<ul>
+<li>NDA — National Defence Academy</li>
+<li>CDS — Combined Defence Services</li>
+<li>AFCAT — Air Force Common Admission Test</li>
+</ul>
+<h3>📌 Eligibility</h3>
+<p>10+2 for NDA, Graduation for CDS/AFCAT</p>
+<h3>📌 Syllabus</h3>
+<ul>
+<li>Mathematics</li>
+<li>General Ability Test</li>
+<li>English</li>
+<li>Physical fitness</li>
+</ul>`},
+police:{title:'👮 Police Exam Preparation',content:`
+<h3>📌 State Police Exams</h3>
+<ul>
+<li>Sub Inspector (SI)</li>
+<li>Constable</li>
+<li>ASI — Assistant Sub Inspector</li>
+</ul>
+<h3>📌 Syllabus</h3>
+<ul>
+<li>General Knowledge</li>
+<li>Reasoning</li>
+<li>Mathematics</li>
+<li>Hindi/English</li>
+<li>Physical Test</li>
+</ul>`},
+cbse10:{title:'📗 CBSE Class 10 Preparation',content:`
+<h3>📌 Subjects</h3>
+<ul>
+<li>Mathematics — Algebra, Geometry, Trigonometry</li>
+<li>Science — Physics, Chemistry, Biology</li>
+<li>Social Science — History, Geography, Civics</li>
+<li>English — Literature, Grammar</li>
+<li>Hindi</li>
+</ul>
+<h3>📌 Tips</h3>
+<ul>
+<li>NCERT books are most important</li>
+<li>Practice previous year papers</li>
+<li>Make short notes</li>
+<li>Regular revision</li>
+</ul>`},
+cbse12:{title:'📘 CBSE Class 12 Preparation',content:`
+<h3>📌 Streams</h3>
+<ul>
+<li>Science — PCM or PCB</li>
+<li>Commerce — Accounts, Economics, Business</li>
+<li>Arts — History, Political Science, Psychology</li>
+</ul>
+<h3>📌 Tips</h3>
+<ul>
+<li>Chapter-wise study plan</li>
+<li>Sample papers practice</li>
+<li>NCERT + Reference books</li>
+</ul>`}
+};
+
+var userAnswers={};
+var currentQuiz='';
+
+function showTab(tab,el){
+document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+document.getElementById(tab).classList.add('active');
+el.classList.add('active');
+currentTab=tab;
+}
+
+function openExam(id){
+var e=examContent[id];
+if(!e)return;
+document.getElementById('exam-content').innerHTML='<h2>'+e.title+'</h2>'+e.content;
+document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+document.getElementById('exam-view').classList.add('active');
+}
+
+function startQuiz(type){
+currentQuiz=type;
+userAnswers={};
+var questions=quizData[type];
+var titles={gk:'🌍 General Knowledge Test',math:'📐 Mathematics Test',english:'📖 English Test',computer:'💻 Computer Science Test'};
+document.getElementById('quiz-title').textContent=titles[type];
+var html='';
+questions.forEach((q,i)=>{
+html+='<div class="question"><p>'+(i+1)+'. '+q.q+'</p><div class="options">';
+q.opts.forEach((opt,j)=>{
+html+='<div class="option" id="opt-'+i+'-'+j+'" onclick="selectAnswer('+i+','+j+')">'+String.fromCharCode(65+j)+') '+opt+'</div>';
+});
+html+='</div></div>';
+});
+document.getElementById('quiz-questions').innerHTML=html;
+document.getElementById('quiz-result').style.display='none';
+document.getElementById('submit-btn').style.display='block';
+document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+document.getElementById('quiz-view').classList.add('active');
+}
+
+function selectAnswer(q,opt){
+userAnswers[q]=opt;
+var row=document.querySelectorAll('.question')[q];
+row.querySelectorAll('.option').forEach(o=>o.classList.remove('correct','wrong'));
+row.querySelectorAll('.option')[opt].classList.add('correct');
+}
+
+function submitQuiz(){
+var questions=quizData[currentQuiz];
+var score=0;
+questions.forEach((q,i)=>{
+var opts=document.querySelectorAll('.question')[i].querySelectorAll('.option');
+opts.forEach(o=>{o.classList.remove('correct','wrong');});
+if(userAnswers[i]===q.ans){score++;opts[q.ans].classList.ad
