@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MoniX — Dashboard</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#060d1a;color:white;font-family:Arial,sans-serif;}
+nav{background:rgba(6,13,26,0.95);padding:15px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(0,229,255,0.2);position:sticky;top:0;z-index:100;}
+.logo{font-size:22px;font-weight:bold;background:linear-gradient(90deg,#00E5FF,#00897B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none;}
+.nav-right{display:flex;align-items:center;gap:15px;}
+.nav-right span{color:#87CEEB;font-size:13px;}
+.logout-btn{padding:7px 15px;background:transparent;border:1px solid #ff4444;color:#ff4444;border-radius:8px;cursor:pointer;font-size:12px;}
+.welcome-bar{background:linear-gradient(135deg,#0a1628,#062a2a);padding:25px 20px;border-bottom:1px solid rgba(0,229,255,0.1);}
+.welcome-bar h2{font-size:22px;background:linear-gradient(90deg,#00E5FF,#00897B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.welcome-bar p{color:#aaa;font-size:13px;margin-top:5px;}
+.membership-badge{display:inline-block;padding:4px 12px;background:rgba(0,229,255,0.1);border:1px solid rgba(0,229,255,0.3);border-radius:15px;color:#00E5FF;font-size:12px;margin-top:10px;}
+.stats-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:15px;padding:20px;}
+.stat-card{background:linear-gradient(135deg,#0a1628,#062a2a);border:1px solid rgba(0,229,255,0.15);border-radius:12px;padding:15px;text-align:center;}
+.stat-card .stat-icon{font-size:24px;margin-bottom:8px;}
+.stat-card h3{font-size:22px;background:linear-gradient(90deg,#00E5FF,#00897B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.stat-card p{color:#aaa;font-size:11px;margin-top:3px;}
+.section{padding:20px;}
+.section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;}
+.section-title{color:#00E5FF;font-size:16px;border-left:3px solid #00897B;padding-left:10px;}
+.see-all{color:#00E5FF;font-size:12px;text-decoration:none;cursor:pointer;}
+.quick-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;}
+.quick-card{background:linear-gradient(135deg,#0a1628,#062a2a);border:1px solid rgba(0,229,255,0.15);border-radius:12px;padding:15px;text-align:center;cursor:pointer;transition:0.3s;text-decoration:none;display:block;}
+.quick-card:hover{border-color:#00E5FF;transform:translateY(-3px);}
+.quick-card .icon{font-size:28px;margin-bottom:8px;}
+.quick-card h3{color:#87CEEB;font-size:12px;}
+.activity-list{display:flex;flex-direction:column;gap:10px;}
+.activity-item{background:linear-gradient(135deg,#0a1628,#062a2a);border:1px solid rgba(0,229,255,0.1);border-radius:10px;padding:12px 15px;display:flex;align-items:center;gap:12px;}
+.activity-icon{font-size:20px;}
+.activity-info p{color:white;font-size:13px;}
+.activity-info span{color:#555;font-size:11px;}
+.activity-time{margin-left:auto;color:#555;font-size:11px;}
+.progress-section{padding:20px;}
+.progress-item{margin-bottom:15px;}
+.progress-header{display:flex;justify-content:space-between;margin-bottom:6px;}
+.progress-header span{color:#aaa;font-size:13px;}
+.progress-header strong{color:#00E5FF;font-size:13px;}
+.progress-bar{height:8px;background:rgba(0,229,255,0.1);border-radius:4px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,#00E5FF,#00897B);border-radius:4px;transition:1s;}
+.membership-section{padding:20px;}
+.plans{display:flex;flex-wrap:wrap;gap:15px;}
+.plan{background:linear-gradient(135deg,#0a1628,#062a2a);border:1px solid rgba(0,229,255,0.2);border-radius:15px;padding:20px;flex:1;min-width:150px;}
+.plan.current{border-color:#00E5FF;}
+.plan.current::before{content:'Current Plan';display:block;background:linear-gradient(90deg,#00E5FF,#00897B);color:#060d1a;font-size:10px;font-weight:bold;padding:3px 10px;border-radius:8px;display:inline-block;margin-bottom:10px;}
+.plan h3{color:#00E5FF;margin-bottom:5px;font-size:15px;}
+.plan .price{font-size:22px;font-weight:bold;color:white;margin:8px 0;}
+.plan .price span{font-size:12px;color:#aaa;}
+.plan ul{list-style:none;margin:10px 0;}
+.plan ul li{color:#aaa;font-size:12px;padding:3px 0;}
+.plan ul li::before{content:'✓ ';color:#00E5FF;}
+.upgrade-btn{width:100%;padding:9px;background:linear-gradient(90deg,#00E5FF,#00897B);color:#060d1a;border:none;border-radius:8px;font-weight:bold;cursor:pointer;font-size:13px;margin-top:10px;}
+footer{background:#040a14;padding:20px;border-top:1px solid rgba(0,229,255,0.1);text-align:center;margin-top:20px;}
+footer p{color:#333;font-size:12px;}
+footer a{color:#00E5FF;margin:0 8px;text-decoration:none;font-size:12px;}
+</style>
+</head>
+<body>
+<nav>
+<a href="index.html" class="logo">MoniX</a>
+<div class="nav-right">
+<span>👤 Suraj</span>
+<button class="logout-btn" onclick="window.location.href='login.html'">Logout</button>
+</div>
+</nav>
+
+<div class="welcome-bar">
+<h2>Welcome back, Suraj! 👋</h2>
+<p>Continue your learning journey</p>
+<span class="membership-badge">🆓 Explorer Plan</span>
+</div>
+
+<div class="stats-row">
+<div class="stat-card"><div class="stat-icon">📚</div><h3>3</h3><p>Courses Started</p></div>
+<div class="stat-card"><div class="stat-icon">⚡</div><h3>125</h3><p>XP Points</p></div>
+<div class="stat-card"><div class="stat-icon">🤖</div><h3>12</h3><p>AI Tools Used</p></div>
+<div class="stat-card"><div class="stat-icon">🏆</div><h3>2</h3><p>Badges Earned</p></div>
+</div>
+
+<div class="section">
+<div class="section-header">
+<p class="section-title">⚡ Quick Access</p>
+</div>
+<div class="quick-grid">
+<a href="learn.html" class="quick-card"><div class="icon">📚</div><h3>Continue Learning</h3></a>
+<a href="tools.html" class="quick-card"><div class="icon">🤖</div><h3>AI Tools</h3></a>
+<a href="exams.html" class="quick-card"><div class="icon">📝</div><h3>Mock Tests</h3></a>
+<a href="exams.html" class="quick-card"><div class="icon">🎯</div><h3>Exam Prep</h3></a>
+<a href="learn.html" class="quick-card"><div class="icon">🛡️</div><h3>Cyber Security</h3></a>
+<a href="tools.html" class="quick-card"><div class="icon">💻</div><h3>Code Generator</h3></a>
+</div>
+</div>
+
+<div class="progress-section">
+<div class="section-header">
+<p class="section-title">📊 Learning Progress</p>
+</div>
+<div class="progress-item">
+<div class="progress-header"><span>🐍 Python Programming</span><strong>45%</strong></div>
+<div class="progress-bar"><div class="progress-fill" style="width:45%"></div></div>
+</div>
+<div class="progress-item">
+<div class="progress-header"><span>🌐 Web Development</span><strong>30%</strong></div>
+<div class="progress-bar"><div class="progress-fill" style="width:30%"></div></div>
+</div>
+<div class="progress-item">
+<div class="progress-header"><span>🛡️ Ethical Hacking</span><strong>60%</strong></div>
+<div class="progress-bar"><div class="progress-fill" style="width:60%"></div></div>
+</div>
+</div>
+
+<div class="section">
+<div class="section-header">
+<p class="section-title">🕐 Recent Activity</p>
+</div>
+<div class="activity-list">
+<div class="activity-item"><div class="activity-icon">🤖</div><div class="activity-info"><p>Used AI Code Generator</p><span>Python script generated</span></div><div class="activity-time">2 hrs ago</div></div>
+<div class="activity-item"><div class="activity-icon">📚</div><div class="activity-info"><p>Studied Python — Lesson 3</p><span>Variables & Data Types</span></div><div class="activity-time">5 hrs ago</div></div>
+<div class="activity-item"><div class="activity-icon">📝</div><div class="activity-info"><p>Completed Mock Test</p><span>GK Test — 4/5 Correct</span></div><div class="activity-time">Yesterday</div></div>
+<div class="activity-item"><div class="activity-icon">🏆</div><div class="activity-info"><p>Badge Earned!</p><span>First Login Badge 🎖️</span></div><div class="activity-time">2 days ago</div></div>
+</div>
+</div>
+
+<div class="membership-section">
+<div class="section-header">
+<p class="section-title">👑 Membership Plans</p>
+</div>
+<div class="plans">
+<div class="plan current">
+<h3>Explorer</h3>
+<div class="price">Free<span>/month</span></div>
+<ul>
+<li>Basic Access</li>
+<li>Limited AI</li>
+<li>Basic Notes</li>
+</ul>
+</div>
+<div class="plan">
+<h3>Creator</h3>
+<div class="price">₹99<span>/month</span></div>
+<ul>
+<li>More AI Tools</li>
+<li>Downloads</li>
+<li>Ad Free</li>
+</ul>
+<button class="upgrade-btn">Upgrade</button>
+</div>
+<div class="plan">
+<h3>Master</h3>
+<div class="price">₹199<span>/month</span></div>
+<ul>
+<li>Full AI Access</li>
+<li>All Content</li>
+<li>Certificates</li>
+</ul>
+<button class="upgrade-btn">Upgrade</button>
+</div>
+</div>
+</div>
+
+<footer>
+<p>© 2026 MoniX — India's Digital Ecosystem</p>
+<a href="index.html">Home</a>
+<a href="#">Privacy</a>
+<a href="#">Terms</a>
+</footer>
+</body>
+  </html>
