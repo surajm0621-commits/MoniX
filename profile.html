@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MoniX — Profile</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#060d1a;color:white;font-family:Arial,sans-serif;}
+nav{background:rgba(6,13,26,0.95);padding:15px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(0,229,255,0.2);position:sticky;top:0;z-index:100;}
+.logo{font-size:24px;font-weight:bold;background:linear-gradient(90deg,#00E5FF,#00897B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none;}
+.nav-links a{color:#aaa;text-decoration:none;margin-left:15px;font-size:13px;}
+.nav-links a:hover{color:#00E5FF;}
+.profile-header{background:linear-gradient(135deg,#060d1a,#0a1628,#062a2a);padding:40px 20px;text-align:center;border-bottom:1px solid rgba(0,229,255,0.1);}
+.avatar{width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,#00E5FF,#00897B);display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 15px;}
+.profile-name{font-size:24px;font-weight:bold;background:linear-gradient(90deg,#00E5FF,#00897B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.profile-handle{color:#aaa;font-size:14px;margin-top:5px;}
+.membership-badge{display:inline-block;padding:5px 15px;background:rgba(0,229,255,0.1);border:1px solid rgba(0,229,255,0.3);border-radius:15px;color:#00E5FF;font-size:12px;margin-top:10px;}
+.profile-stats{display:flex;justify-content:center;gap:30px;margin-top:20px;flex-wrap:wrap;}
+.p-stat{text-align:center;}
+.p-stat h3{font-size:22px;background:linear-gradient(90deg,#00E5FF,#00897B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.p-stat p{color:#aaa;font-size:12px;margin-top:3px;}
+.tabs{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;padding:20px;}
+.tab{padding:8px 18px;border-radius:20px;border:1px solid rgba(0,229,255,0.2);color:#aaa;cursor:pointer;font-size:13px;background:transparent;transition:0.3s;}
+.tab.active{background:linear-gradient(90deg,#00E5FF,#00897B);color:#060d1a;font-weight:bold;border:none;}
+.content{padding:20px;max-width:800px;margin:0 auto;}
+.section{display:none;}
+.section.active{display:block;}
+.section-title{color:#00E5FF;font-size:16px;margin-bottom:15px;border-left:3px solid #00897B;padding-left:10px;}
+.badges-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:15px;}
+.badge-card{background:linear-gradient(135deg,#0a1628,#062a2a);border:1px solid rgba(0,229,255,0.15);border-radius:12px;padding:15px;text-align:center;}
+.badge-card .badge-icon{font-size:32px;margin-bottom:8px;}
+.badge-card h4{color:#87CEEB;font-size:12px;}
+.badge-card p{color:#555;font-size:11px;margin-top:3px;}
+.badge-card.locked{opacity:0.4;}
+.progress-item{background:linear-gradient(135deg,#0a1628,#062a2a);border:1px solid rgba(0,229,255,0.1);border-radius:12px;padding:15px;margin-bottom:12px;}
+.progress-header{display:flex;justify-content:space-between;margin-bottom:8px;}
+.progress-header span{color:#aaa;font-size:13px;}
+.progress-header strong{color:#00E5FF;font-size:13px;}
+.progress-bar{height:8px;background:rgba(0,229,255,0.1);border-radius:4px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,#00E5FF,#00897B);border-radius:4px;}
+.activity-item{background:linear-gradient(135deg,#0a1628,#062a2a);border:1px solid rgba(0,229,255,0.1);border-radius:10px;padding:12px 15px;display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.activity-icon{font-size:20px;}
+.activity-info p{color:white;font-size:13px;}
+.activity-info span{color:#555;font-size:11px;}
+.activity-time{margin-left:auto;color:#555;font-size:11px;}
+.cert-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:15px;}
+.cert-card{background:linear-gradient(135deg,#0a1628,#062a2a);border:2px solid rgba(0,229,255,0.3);border-radius:15px;padding:20px;text-align:center;}
+.cert-card .cert-icon{font-size:40px;margin-bottom:10px;}
+.cert-card h4{color:#00E5FF;font-size:14px;margin-bottom:5px;}
+.cert-card p{color:#aaa;font-size:12px;}
+.cert-card .cert-date{color:#555;font-size:11px;margin-top:8px;}
+.cert-card.locked{opacity:0.3;border-color:rgba(255,255,255,0.1);}
+.settings-box{background:linear-gradient(135deg,#0a1628,#062a2a);border:1px solid rgba(0,229,255,0.2);border-radius:15px;padding:25px;margin-bottom:15px;}
+.settings-box h3{color:#00E5FF;font-size:15px;margin-bottom:20px;border-left:3px solid #00897B;padding-left:10px;}
+.form-row{margin-bottom:15px;}
+.form-row label{display:block;color:#87CEEB;font-size:13px;margin-bottom:6px;}
+.form-row input,.form-row select{width:100%;padding:11px;background:rgba(0,229,255,0.05);border:1px solid rgba(0,229,255,0.2);border-radius:8px;color:white;font-size:14px;outline:none;}
+.save-btn{padding:11px 25px;background:linear-gradient(90deg,#00E5FF,#00897B);color:#060d1a;border:none;border-radius:10px;font-weight:bold;cursor:pointer;font-size:14px;}
+.danger-btn{padding:11px 25px;background:transparent;border:1px solid #ff4444;color:#ff4444;border-radius:10px;cursor:pointer;font-size:14px;margin-left:10px;}
+.success-msg{background:rgba(0,229,255,0.1);border:1px solid rgba(0,229,255,0.3);border-radius:8px;padding:10px;color:#00E5FF;font-size:13px;margin-top:10px;display:none;text-align:center;}
+.xp-bar{background:rgba(0,229,255,0.05);border:1px solid rgba(0,229,255,0.2);border-radius:10px;padding:15px;margin-top:15px;}
+.xp-bar p{color:#aaa;font-size:12px;margin-bottom:8px;}
+.xp-fill{height:10px;background:linear-gradient(90deg,#00E5FF,#00897B);border-radius:5px;width:35%;}
+.xp-bar span{color:#00E5FF;font-size:12px;display:block;margin-top:5px;}
+footer{background:#040a14;padding:20px;border-top:1px solid rgba(0,229,255,0.1);text-align:center;margin-top:20px;}
+footer p{color:#333;font-size:12px;}
+footer a{color:#00E5FF;margin:0 8px;text-decoration:none;font-size:12px;}
+</style>
+</head>
+<body>
+<nav>
+<a href="index.html" class="logo">MoniX</a>
+<div class="nav-links">
+<a href="index.html">Home</a>
+<a href="dashboard.html">Dashboard</a>
+<a href="login.html">Logout</a>
+</div>
+</nav>
+
+<div class="profile-header">
+<div class="avatar">👤</div>
+<p class="profile-name">Suraj</p>
+<p class="profile-handle">@suraj_monix</p>
+<span class="membership-badge">🆓 Explorer Plan</span>
+<div class="xp-bar">
+<p>XP Progress — Level 2</p>
+<div class="xp-fill"></div>
+<span>125 / 500 XP — Next: Level 3</span>
+</div>
+<div class="profile-stats">
+<div class="p-stat"><h3>3</h3><p>Courses</p></div>
+<div class="p-stat"><h3>125</h3><p>XP Points</p></div>
+<div class="p-stat"><h3>2</h3><p>Badges</p></div>
+<div class="p-stat"><h3>5</h3><p>Days Streak</p></div>
+<div class="p-stat"><h3>12</h3><p>AI Uses</p></div>
+</div>
+</div>
+
+<div class="tabs">
+<div class="tab active" onclick="showTab('overview',this)">📊 Overview</div>
+<div class="tab" onclick="showTab('badges',this)">🏆 Badges</div>
+<div class="tab" onclick="showTab('progress',this)">📈 Progress</div>
+<div class="tab" onclick="showTab('certs',this)">🎓 Certificates</div>
+<div class="tab" onclick="showTab('settings',this)">⚙️ Settings</div>
+</div>
+
+<div class="content">
+
+<!-- Overview -->
+<div class="section active" id="overview">
+<p class="section-title">🕐 Recent Activity</p>
+<div class="activity-item"><div class="activity-icon">🤖</div><div class="activity-info"><p>Used AI Code Generator</p><span>Python script generated</span></div><div class="activity-time">2 hrs ago</div></div>
+<div class="activity-item"><div class="activity-icon">📚</div><div class="activity-info"><p>Studied Python — Lesson 3</p><span>Variables & Data Types</span></div><div class="activity-time">5 hrs ago</div></div>
+<div class="activity-item"><div class="activity-icon">📝</div><div class="activity-info"><p>Completed Mock Test</p><span>GK Test — 4/5 Correct</span></div><div class="activity-time">Yesterday</div></div>
+<div class="activity-item"><div class="activity-icon">🏆</div><div class="activity-info"><p>Badge Earned!</p><span>First Login Badge 🎖️</span></div><div class="activity-time">2 days ago</div></div>
+<div class="activity-item"><div class="activity-icon">🛡️</div><div class="activity-info"><p>Started Ethical Hacking Course</p><span>Lesson 1 — Linux Basics</span></div><div class="activity-time">3 days ago</div></div>
+</div>
+
+<!-- Badges -->
+<div class="section" id="badges">
+<p class="section-title">🏆 My Badges</p>
+<div class="badges-grid">
+<div class="badge-card"><div class="badge-icon">🎖️</div><h4>First Login</h4><p>Joined MoniX</p></div>
+<div class="badge-card"><div class="badge-icon">🐍</div><h4>Python Starter</h4><p>Started Python</p></div>
+<div class="badge-card locked"><div class="badge-icon">🔒</div><h4>Quiz Master</h4><p>Score 10/10</p></div>
+<div class="badge-card locked"><div class="badge-icon">🔒</div><h4>AI Explorer</h4><p>Use 20 AI tools</p></div>
+<div class="badge-card locked"><div class="badge-icon">🔒</div><h4>Course Hero</h4><p>Complete 5 courses</p></div>
+<div class="badge-card locked"><div class="badge-icon">🔒</div><h4>Streak King</h4><p>30 day streak</p></div>
+<div class="badge-card locked"><div class="badge-icon">🔒</div><h4>Hacker</h4><p>Complete Cyber course</p></div>
+<div class="badge-card locked"><div class="badge-icon">🔒</div><h4>Top Learner</h4><p>Reach Level 10</p></div>
+</div>
+</div>
+
+<!-- Progress -->
+<div class="section" id="progress">
+<p class="section-title">📈 Learning Progress</p>
+<div class="progress-item">
+<div class="progress-header"><span>🐍 Python Programming</span><strong>45%</strong></div>
+<div class="progress-bar"><div class="progress-fill" style="width:45%"></div></div>
+</div>
+<div class="progress-item">
+<div class="progress-header"><span>🌐 Web Development</span><strong>30%</strong></div>
+<div class="progress-bar"><div class="progress-fill" style="width:30%"></div></div>
+</div>
+<div class="progress-item">
+<div class="progress-header"><span>🛡️ Ethical Hacking</span><strong>60%</strong></div>
+<div class="progress-bar"><div class="progress-fill" style="width:60%"></div></div>
+</div>
+<div class="progress-item">
+<div class="progress-header"><span>📐 Mathematics</span><strong>15%</strong></div>
+<div class="progress-bar"><div class="progress-fill" style="width:15%"></div></div>
+</div>
+</div>
+
+<!-- Certificates -->
+<div class="section" id="certs">
+<p class="section-title">🎓 My Certificates</p>
+<div class="cert-grid">
+<div class="cert-card">
+<div class="cert-icon">🐍</div>
+<h4>Python Basics</h4>
+<p>Successfully completed Python Programming — Beginner Level</p>
+<p class="cert-date">📅 Issued: June 2026</p>
+</div>
+<div class="cert-card locked">
+<div class="cert-icon">🔒</div>
+<h4>Web Development</h4>
+<p>Complete course to earn</p>
+<p class="cert-date">Not earned yet</p>
+</div>
+<div class="cert-card locked">
+<div class="cert-icon">🔒</div>
+<h4>Ethical Hacking</h4>
+<p>Complete course to earn</p>
+<p class="cert-date">Not earned yet</p>
+</div>
+<div class="cert-card locked">
+<div class="cert-icon">🔒</div>
+<h4>AI & ML</h4>
+<p>Creator plan required</p>
+<p class="cert-date">Upgrade to unlock</p>
+</div>
+</div>
+</div>
+
+<!-- Settings -->
+<div class="section" id="settings">
+<div class="settings-box">
+<h3>👤 Edit Profile</h3>
+<div class="form-row"><label>Full Name</label><input type="text" value="Suraj" id="s-name"/></div>
+<div class="form-row"><label>Username</label><input type="text" value="@suraj_monix" id="s-handle"/></div>
+<div class="form-row"><label>Email</label><input type="email" value="suraj@monix.com" id="s-email"/></div>
+<div class="form-row"><label>Bio</label><input type="text" placeholder="Tell something about yourself..." id="s-bio"/></div>
+<button class="save-btn" onclick="saveProfile()">✅ Save Changes</button>
+<p class="success-msg" id="save-success">✅ Profile updated!</p>
+</div>
+<div class="settings-box">
+<h3>🔒 Security</h3>
+<div class="form-row"><label>Current Password</label><input type="password" placeholder="Enter current password"/></div>
+<div class="form-row"><label>New Password</label><input type="password" placeholder="Enter new password"/></div>
+<div class="form-row"><label>Confirm Password</label><input type="password" placeholder="Confirm new password"/></div>
+<button class="save-btn" onclick="savePass()">🔒 Update Password</button>
+<p class="success-msg" id="pass-success">✅ Password updated!</p>
+</div>
+<div class="settings-box">
+<h3>👑 Membership</h3>
+<p style="color:#aaa;font-size:13px;margin-bottom:15px;">Current Plan: <span style="color:#00E5FF;">🆓 Explorer (Free)</span></p>
+<button class="save-btn" onclick="upgradePlan()">⬆️ Upgrade to Creator — ₹99/mo</button>
+</div>
+<div class="settings-box">
+<h3>⚠️ Danger Zone</h3>
+<p style="color:#aaa;font-size:13px;margin-bottom:15px;">Permanently delete your account and all data.</p>
+<button class="danger-btn" onclick="deleteAccount()">🗑️ Delete Account</button>
+</div>
+</div>
+
+</div>
+
+<footer>
+<p>© 2026 MoniX — India's Digital Ecosystem</p>
+<a href="index.html">Home</a>
+<a href="dashboard.html">Dashboard</a>
+<a href="#">Privacy</a>
+</footer>
+
+<script>
+function showTab(tab,el){
+document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+document.getElementById(tab).classList.add('active');
+el.classList.add('active');
+}
+function saveProfile(){
+var s=document.getElementById('save-success');
+s.style.display='block';
+setTimeout(()=>{s.style.display='none';},2000);
+}
+function savePass(){
+var s=document.getElementById('pass-success');
+s.style.display='block';
+setTimeout(()=>{s.style.display='none';},2000);
+}
+function upgradePlan(){
+alert('Payment gateway coming soon!\nCreator Plan — ₹99/month\n\nWe will notify you when payments go live! 🚀');
+}
+function deleteAccount(){
+if(confirm('Are you sure? This cannot be undone!')){
+alert('Account deletion will be available when backend is ready!');
+}}
+</script>
+</body>
+  </html>
