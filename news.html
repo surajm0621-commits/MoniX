@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MoniX — News</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#060d1a;color:white;font-family:Arial,sans-serif;}
+nav{background:rgba(6,13,26,0.95);padding:15px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(0,229,255,0.2);position:sticky;top:0;z-index:100;}
+.logo{font-size:24px;font-weight:bold;background:linear-gradient(90deg,#00E5FF,#00897B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none;}
+.nav-links a{color:#aaa;text-decoration:none;margin-left:15px;font-size:13px;}
+.nav-links a:hover{color:#00E5FF;}
+.hero{text-align:center;padding:50px 20px;background:linear-gradient(135deg,#060d1a,#0a1628,#062a2a);}
+.hero-badge{background:rgba(0,229,255,0.1);border:1px solid rgba(0,229,255,0.3);border-radius:20px;padding:6px 15px;font-size:12px;color:#00E5FF;display:inline-block;margin-bottom:15px;}
+.hero h1{font-size:36px;font-weight:bold;background:linear-gradient(135deg,#ffffff,#00E5FF,#00897B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px;}
+.hero p{color:#aaa;font-size:14px;}
+.search-bar{max-width:500px;margin:20px auto 0;position:relative;}
+.search-bar input{width:100%;padding:12px 50px 12px 20px;background:rgba(0,229,255,0.05);border:1px solid rgba(0,229,255,0.3);border-radius:25px;color:white;font-size:14px;outline:none;}
+.search-bar input::placeholder{color:#444;}
+.search-bar span{position:absolute;right:15px;top:50%;transform:translateY(-50%);font-size:18px;}
+.tabs{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;padding:25px 20px 10px;}
+.tab{padding:8px 18px;border-radius:20px;border:1px solid rgba(0,229,255,0.2);color:#aaa;cursor:pointer;font-size:13px;background:transparent;transition:0.3s;}
+.tab.active{background:linear-gradient(90deg,#00E5FF,#00897B);color:#060d1a;font-weight:bold;border:none;}
+.content{padding:20px;max-width:900px;margin:0 auto;}
+.section{display:none;}
+.section.active{display:block;}
+.featured-card{background:linear-gradient(135deg,#0a1628,#062a2a);border:1px solid rgba(0,229,255,0.3);border-radius:20px;padding:25px;margin-bottom:25px;cursor:pointer;transition:0.3s;}
+.featured-card:hover{border-color:#00E5FF;box-shadow:0 10px 30px rgba(0,229,255,0.15);}
+.featured-tag{background:linear-gradient(90deg,#00E5FF,#00897B);color:#060d1a;font-size:11px;font-weight:bold;padding:4px 12px;border-radius:10px;display:inline-block;margin-bottom:12px;}
+.featured-card h2{font-size:20px;color:white;margin-bottom:10px;line-height:1.4;}
+.featured-card p{color:#aaa;font-size:13px;line-height:1.7;}
+.featured-meta{display:flex;gap:15px;margin-top:15px;}
+.featured-meta span{color:#555;font-size:12px;}
+.news-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:15px;}
+.news-card{background:linear-gradient(135deg,#0a1628,#062a2a);border:1px solid rgba(0,229,255,0.15);border-radius:15px;padding:20px;cursor:pointer;transition:0.3s;}
+.news-card:hover{border-color:#00E5FF;transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,229,255,0.1);}
+.news-tag{font-size:10px;font-weight:bold;padding:3px 10px;border-radius:8px;display:inline-block;margin-bottom:10px;}
+.tag-tech{background:rgba(0,229,255,0.1);color:#00E5FF;}
+.tag-exam{background:rgba(255,165,0,0.1);color:orange;}
+.tag-career{background:rgba(0,200,100,0.1);color:#00C864;}
+.tag-ai{background:rgba(155,89,182,0.1);color:#9b59b6;}
+.tag-edu{background:rgba(52,152,219,0.1);color:#3498db;}
+.tag-sports{background:rgba(231,76,60,0.1);color:#e74c3c;}
+.news-card h3{color:white;font-size:14px;margin-bottom:8px;line-height:1.4;}
+.news-card p{color:#aaa;font-size:12px;line-height:1.6;}
+.news-meta{display:flex;justify-content:space-between;margin-top:12px;}
+.news-meta span{color:#555;font-size:11px;}
+.read-btn{color:#00E5FF;font-size:11px;cursor:pointer;}
+.article-view{display:none;background:linear-gradient(135deg,#0a1628,#062a2a);border:1px solid rgba(0,229,255,0.2);border-radius:15px;padding:25px;}
+.article-view h2{font-size:22px;color:white;margin-bottom:15px;line-height:1.4;}
+.article-view .article-body{color:#aaa;font-size:14px;line-height:1.9;}
+.article-view .article-body h3{color:#87CEEB;margin:15px 0 8px;}
+.back-btn{background:transparent;border:1px solid #00E5FF;color:#00E5FF;padding:8px 15px;border-radius:8px;cursor:pointer;margin-bottom:20px;font-size:13px;}
+footer{background:#040a14;padding:30px 20px;border-top:1px solid rgba(0,229,255,0.1);text-align:center;margin-top:40px;}
+footer p{color:#333;font-size:12px;}
+footer a{color:#00E5FF;margin:0 8px;text-decoration:none;font-size:12px;}
+</style>
+</head>
+<body>
+<nav>
+<a href="index.html" class="logo">MoniX</a>
+<div class="nav-links">
+<a href="index.html">Home</a>
+<a href="learn.html">Learn</a>
+<a href="tools.html">AI Tools</a>
+<a href="login.html">Login</a>
+</div>
+</nav>
+
+<div class="hero">
+<div class="hero-badge">📰 Latest News</div>
+<h1>MoniX News</h1>
+<p>Stay Updated — Tech • Exams • Career • AI</p>
+<div class="search-bar">
+<input type="text" placeholder="Search news..." id="search-input" oninput="searchNews()"/>
+<span>🔍</span>
+</div>
+</div>
+
+<div class="tabs">
+<div class="tab active" onclick="showTab('all',this)">⚡ All</div>
+<div class="tab" onclick="showTab('tech',this)">💻 Tech</div>
+<div class="tab" onclick="showTab('exam',this)">🎯 Exams</div>
+<div class="tab" onclick="showTab('career',this)">💼 Career</div>
+<div class="tab" onclick="showTab('ai',this)">🤖 AI</div>
+<div class="tab" onclick="showTab('sports',this)">🏆 Sports</div>
+</div>
+
+<div class="content">
+<div id="article-view" class="article-view">
+<button class="back-btn" onclick="closeArticle()">← Back to News</button>
+<h2 id="article-title"></h2>
+<div style="margin-bottom:15px;"><span id="article-tag" class="news-tag"></span><span style="color:#555;font-size:12px;margin-left:10px;" id="article-date"></span></div>
+<div class="article-body" id="article-body"></div>
+</div>
+
+<div id="news-sections">
+<div class="section active" id="all">
+<div class="featured-card" onclick="openArticle('ai-revolution')">
+<span class="featured-tag">🔥 Featured</span>
+<h2>AI Revolution in Education 2026 — How India is Changing</h2>
+<p>Artificial Intelligence is transforming the way millions of Indian students learn, prepare for exams, and build careers. From AI tutors to personalized learning paths, the education sector is witnessing unprecedented change...</p>
+<div class="featured-meta"><span>🤖 AI</span><span>📅 June 2026</span><span>⏱️ 5 min read</span></div>
+</div>
+<div class="news-grid" id="all-grid">
+<div class="news-card" onclick="openArticle('ssc-2026')"><span class="news-tag tag-exam">🎯 Exam</span><h3>SSC CGL 2026 Notification Released</h3><p>Staff Selection Commission releases official notification. Check eligibility, dates, and apply now...</p><div class="news-meta"><span>📅 June 2026</span><span class="read-btn">Read More →</span></div></div>
+<div class="news-card" onclick="openArticle('chatgpt-update')"><span class="news-tag tag-ai">🤖 AI</span><h3>ChatGPT Gets Major Update — New Features 2026</h3><p>OpenAI releases groundbreaking updates to ChatGPT with improved reasoning and coding capabilities...</p><div class="news-meta"><span>📅 June 2026</span><span class="read-btn">Read More →</span></div></div>
+<div class="news-card" onclick="openArticle('top-jobs')"><span class="news-tag tag-career">💼 Career</span><h3>Top 10 Highest Paying Jobs in India 2026</h3><p>AI Engineer, Data Scientist, and Cybersecurity Expert top the list of highest paying careers...</p><div class="news-meta"><span>📅 June 2026</span><span class="read-btn">Read More →</span></div></div>
+<div class="news-card" onclick="openArticle('cyber-threat')"><span class="news-tag tag-tech">💻 Tech</span><h3>Major Cybersecurity Threats in 2026</h3><p>Ransomware attacks increase by 300%. Here's how to protect yourself and your data...</p><div class="news-meta"><span>📅 June 2026</span><span class="read-btn">Read More →</span></div></div>
+<div class="news-card" onclick="openArticle('ipl-2026')"><span class="news-tag tag-sports">🏆 Sports</span><h3>IPL 2026 — Season Highlights & Results</h3><p>Complete coverage of IPL 2026 season with match results, player stats, and tournament highlights...</p><div class="news-meta"><span>📅 June 2026</span><span class="read-btn">Read More →</span></div></div>
+<div class="news-card" onclick="openArticle('neet-result')"><span class="news-tag tag-exam">🎯 Exam</span><h3>NEET 2026 Results Announced</h3><p>National Eligibility cum Entrance Test 2026 results are out. Check your scorecard and counseling dates...</p><div class="news-meta"><span>📅 June 2026</span><span class="read-btn">Read More →</span></div></div>
+</div>
+</div>
+
+<div class="section" id="tech">
+<div class="news-grid">
+<div class="news-card" onclick="openArticle('cyber-threat')"><span class="news-tag tag-tech">💻 Tech</span><h3>Major Cybersecurity Threats in 2026</h3><p>Ransomware attacks increase by 300%...</p><div class="news-meta"><span>📅 June 2026</span><span class="read-btn">Read More →</span></div></div>
+<div class="news-card"><span class="news-tag tag-tech">💻 Tech</span><h3>India's Digital India 3.0 Launch</h3><p>Government launches next phase of Digital India with AI integration...</p><div class="news-meta"><span>📅 June 2026</span><span class="read-btn">Read More →</span></div></div>
+<div class="news-card"><span class="news-tag tag-tech">💻 Tech</span><h3>5G Expands to 500 Indian Cities</h3><p>Jio and Airtel expand 5G coverage across tier-2 and tier-3 cities...</p><div class="news-meta"><span>📅 June 2026</span><span class="read-btn">Read More →</span></div></div>
+</div>
+</div>
+
+<div class="section" id="exam">
+<div class="news-grid">
+<div class="news-card" onclick="openArticle('ssc-2026')"><span class="news-tag tag-exam">🎯 Exam</span><h3>SSC CGL 2026 Notification</h3><p>Official notification released. Vacancies, eligibility, dates...</p><div class="news-meta"><span>📅 June 2026</span><span class="read-btn">Read More →</span></div></div>
+<div class="news-card" onclick="openArticle('neet-result')"><span class="news-tag tag-exam">🎯 Exam</span><h3>NEET 2026 Results Out</h3><p>Results announced. Check scorecard and counseling...</p><div class="news-meta"><span>📅 June 2026</span><span class="read-btn">Read More →</span></div></div>
+<div class="news-card"><span class="news-tag tag-exam">🎯 Exam</span><h3>UPSC 2026 Prelims Date Announced</h3><p>Civil services prelims scheduled. Check notification...</p><div class="news-meta"><span>📅 June 2026</span><span class="read-btn">Read More →</span></div></div>
+</div>
+</div>
+
+<div class="section" id="career">
+<div class="news-grid">
+<div class="news-card" onclick="openArticle('top-jobs')"><span class="news-tag tag-career">💼 Career</span><h3>Top 10 Highest Paying Jobs 2026</h3><p>AI, Data Science, Cybersecurity top the list...</p><div class="news-meta"><span>📅 June 2026</span><span class="read-btn">Read More →</span></div></div>
+<div class="news-card"><span class="news-tag tag-career">💼 Career</span><h3>Work From Home Jobs Increase 40%</h3><p>Remote work opportunities surge in IT and education sectors...</p><div class="news-meta"><span>📅 June 2026</span><span class="read-btn">Read More →</span></div></div>
+<div class="news-card"><span class="news-tag tag-career">💼 Career</span><h3>Freelancing in India — Complete Guide 2026</h3><p>How to start freelancing and earn online in India...</p><div class="news-meta"><span>📅 June 2026</span><span class="read-btn">Read More →</span></div></div>
+</div>
+</div>
+
+<div class="section" id="ai">
+<div class="news-grid">
+<div class="news-card" onclick="openArticle('ai-revolution')"><span class="news-tag tag-ai">🤖 AI</span><h3>AI Revolution in Education 2026</h3><p>How AI is transforming Indian education...</p><div class="news-meta"><span>📅 June 2026</span><span class="read-btn">Read More →</span></div></div>
+<div class="news-card" onclick="openArticle('chatgpt-update')"><span class="news-tag tag-ai">🤖 AI</span><h3>ChatGPT Major Update 2026</h3><p>New features and improvements released...</p><div class="news-meta"><span>📅 June 2026</span><span class="read-btn">Read More →</span></div></div>
+<div class="news-card"><span class="news-tag tag-ai">🤖 AI</span><h3>India AI Mission — ₹10,000 Crore Plan</h3><p>Government announces massive AI investment plan...</p><div class="news-meta"><span>📅 June 2026</span><span class="read-btn">Read More →</span></div></div>
+</div>
+</div>
+
+<div class="section" id="sports">
+<div class="news-grid">
+<div class="news-card" onclick="openArticle('ipl-2026')"><span class="news-tag tag-sports">🏆 Sports</span><h3>IPL 2026 Season Highlights</h3><p>Complete coverage of the season...</p><div class="news-meta"><span>📅 June 2026</span><span class="read-btn">Read More →</span></div></div>
+<div class="news-card"><span class="news-tag tag-sports">🏆 Sports</span><h3>India vs Australia Test Series 2026</h3><p>Border-Gavaskar Trophy updates and highlights...</p><div class="news-meta"><span>📅 June 2026</span><span class="read-btn">Read More →</span></div></div>
+<div class="news-card"><span class="news-tag tag-sports">🏆 Sports</span><h3>Olympics 2026 Preparation — India</h3><p>Indian athletes preparing for upcoming Olympics...</p><div class="news-meta"><span>📅 June 2026</span><span class="read-btn">Read More →</span></div></div>
+</div>
+</div>
+</div>
+</div>
+
+<footer>
+<p>© 2026 MoniX — India's Digital Ecosystem</p>
+<a href="index.html">Home</a>
+<a href="learn.html">Learn</a>
+<a href="#">Privacy</a>
+</footer>
+
+<script>
+var articles={
+'ai-revolution':{title:'AI Revolution in Education 2026 — How India is Changing',tag:'🤖 AI',tagClass:'tag-ai',date:'June 2026',body:`
+<h3>Introduction</h3>
+Artificial Intelligence is transforming the way millions of Indian students learn, prepare for exams, and build careers.
+
+<h3>Key Changes in 2026</h3>
+• AI tutors available 24/7 for personalized learning
+• Automated exam preparation with smart question banks
+• AI-powered career guidance systems
+• Voice-based learning for rural students
+
+<h3>Impact on Students</h3>
+Students across India are now using AI tools to generate notes, solve homework problems, and prepare for competitive exams in a fraction of the time it used to take.
+
+<h3>MoniX Role</h3>
+MoniX is contributing to this revolution by providing free AI tools for students — from homework helpers to exam planners.
+
+<h3>Future Outlook</h3>
+By 2030, AI is expected to be integrated into every classroom across India, making quality education accessible to all.
+`},
+'ssc-2026':{title:'SSC CGL 2026 Notification Released — Check Details',tag:'🎯 Exam',tagClass:'tag-exam',date:'June 2026',body:`
+<h3>Official Notification</h3>
+Staff Selection Commission has released the official notification for SSC CGL 2026 examination.
+
+<h3>Key Details</h3>
+• Total Vacancies: 17,000+
+• Application Start: July 2026
+• Exam Date: September-October 2026
+• Age Limit: 18-32 years
+
+<h3>Eligibility</h3>
+• Educational Qualification: Graduate in any stream
+• Nationality: Indian citizen
+
+<h3>Exam Pattern</h3>
+• Tier 1: Computer Based Test (CBT)
+• Tier 2: Computer Based Test
+• Tier 3: Descriptive Paper
+• Tier 4: Skill Test
+
+<h3>Preparation Tips</h3>
+• Focus on Quantitative Aptitude
+• Practice English daily
+• Current Affairs — read daily
+• Previous year papers — must practice
+
+Visit MoniX Exams section for mock tests!
+`},
+'chatgpt-update':{title:'ChatGPT Gets Major Update — New Features 2026',tag:'🤖 AI',tagClass:'tag-ai',date:'June 2026',body:`
+<h3>What's New</h3>
+OpenAI has released a major update to ChatGPT with several groundbreaking features.
+
+<h3>New Features</h3>
+• Improved reasoning capabilities
+• Better code generation
+• Real-time web browsing
+• Image generation integration
+• Voice conversation mode
+
+<h3>Impact on Education</h3>
+Students and professionals are using the updated ChatGPT for research, coding, writing, and problem-solving at unprecedented scale.
+
+<h3>Comparison with Other AI</h3>
+• ChatGPT vs Claude vs Gemini — all improving rapidly
+• Each has unique strengths
+• Competition driving innovation
+`},
+'top-jobs':{title:'Top 10 Highest Paying Jobs in India 2026',tag:'💼 Career',tagClass:'tag-career',date:'June 2026',body:`
+<h3>Top 10 Jobs by Salary</h3>
+1. AI/ML Engineer — ₹25-80 LPA
+2. Data Scientist — ₹20-60 LPA
+3. Cybersecurity Expert — ₹20-50 LPA
+4. Cloud Architect — ₹25-70 LPA
+5. DevOps Engineer — ₹15-45 LPA
+6. Product Manager — ₹20-60 LPA
+7. Blockchain Developer — ₹15-50 LPA
+8. Full Stack Developer — ₹12-40 LPA
+9. UI/UX Designer — ₹10-35 LPA
+10. Digital Marketing Manager — ₹8-25 LPA
+
+<h3>How to Get These Jobs</h3>
+• Learn relevant skills online
+• Build portfolio projects
+• Get certifications
+• Network actively
+
+<h3>Free Resources</h3>
+Visit MoniX Learn section for free courses on all these skills!
+`},
+'cyber-threat':{title:'Major Cybersecurity Threats in 2026 — Stay Safe',tag:'💻 Tech',tagClass:'tag-tech',date:'June 2026',body:`
+<h3>Top Threats in 2026</h3>
+• Ransomware attacks increased 300%
+• AI-powered phishing scams
+• Deep fake fraud
+• IoT device vulnerabilities
+• Supply chain attacks
+
+<h3>How to Stay Safe</h3>
+• Use strong unique passwords
+• Enable 2-factor authentication
+• Keep software updated
+• Don't click suspicious links
+• Use VPN on public WiFi
+
+<h3>For Students</h3>
+Learn ethical hacking on MoniX to understand how attacks work and how to defend against them!
+`},
+'ipl-2026':{title:'IPL 2026 — Season Highlights & Results',tag:'🏆 Sports',tagClass:'tag-sports',date:'June 2026',body:`
+<h3>IPL 2026 Season</h3>
+The Indian Premier League 2026 season concluded with thrilling matches and record-breaking performances.
+
+<h3>Season Highlights</h3>
+• Record viewership across platforms
+• New scoring records set
+• Young talents discovered
+• International stars performance
+
+<h3>Key Statistics</h3>
+• Total matches: 74
+• Highest score: 260+
+• Most sixes in a season
+• Best bowling figures
+
+<h3>Final Result</h3>
+Complete final results and player awards ceremony highlights available on MoniX Sports section!
+`},
+'neet-result':{title:'NEET 2026 Results Announced — Check Your Score',tag:'🎯 Exam',tagClass:'tag-exam',date:'June 2026',body:`
+<h3>NEET 2026 Results</h3>
+National Testing Agency has announced the NEET UG 2026 results.
+
+<h3>Key Information</h3>
+• Result Date: June 2026
+• Total Candidates: 23 lakh+
+• Qualifying Score: 720 marks max
+
+<h3>How to Check Result</h3>
+1. Visit official NTA website
+2. Enter roll number
+3. Enter date of birth
+4. Download scorecard
+
+<h3>Next Steps</h3>
+• Counseling registration
+• Choice filling
+• Seat allotment
+• Document verification
+
+Use MoniX AI tools for next step guidance!
+`}};
+
+var currentTab='all';
+
+function showTab(tab,el){
+document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+document.getElementById(tab).classList.add('active');
+el.classList.add('active');
+currentTab=tab;
+closeArticle();
+}
+
+function openArticle(id){
+var a=articles[id];
+if(!a)return;
+document.getElementById('article-title').textContent=a.title;
+document.getElementById('article-tag').textContent=a.tag;
+document.getElementById('article-tag').className='news-tag '+a.tagClass;
+document.getElementById('article-date').textContent='📅 '+a.date;
+document.getElementById('article-body').innerHTML=a.body.replace(/\n/g,'<br>');
+document.getElementById('article-view').style.display='block';
+document.getElementById('news-sections').style.display='none';
+window.scrollTo(0,0);
+}
+
+function closeArticle(){
+document.getElementById('article-view').style.display='none';
+document.getElementById('news-sections').style.display='block';
+}
+
+function searchNews(){
+var q=document.getElementById('search-input').value.toLowerCase();
+document.querySelectorAll('.news-card,.featured-card').forEach(c=>{
+c.style.d
