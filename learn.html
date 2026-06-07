@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MoniX — Learn</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#060d1a;color:white;font-family:Arial,sans-serif;}
+nav{background:rgba(6,13,26,0.95);padding:15px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(0,229,255,0.2);position:sticky;top:0;z-index:100;}
+.logo{font-size:24px;font-weight:bold;background:linear-gradient(90deg,#00E5FF,#00897B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none;}
+.nav-links a{color:#aaa;text-decoration:none;margin-left:15px;font-size:13px;}
+.nav-links a:hover{color:#00E5FF;}
+.hero{text-align:center;padding:50px 20px;background:linear-gradient(135deg,#060d1a,#0a1628,#062a2a);}
+.hero-badge{background:rgba(0,229,255,0.1);border:1px solid rgba(0,229,255,0.3);border-radius:20px;padding:6px 15px;font-size:12px;color:#00E5FF;display:inline-block;margin-bottom:15px;}
+.hero h1{font-size:36px;font-weight:bold;background:linear-gradient(135deg,#ffffff,#00E5FF,#00897B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px;}
+.hero p{color:#aaa;font-size:14px;margin-bottom:20px;}
+.search-bar{max-width:500px;margin:0 auto;position:relative;}
+.search-bar input{width:100%;padding:12px 50px 12px 20px;background:rgba(0,229,255,0.05);border:1px solid rgba(0,229,255,0.3);border-radius:25px;color:white;font-size:14px;outline:none;}
+.search-bar input::placeholder{color:#444;}
+.search-bar span{position:absolute;right:15px;top:50%;transform:translateY(-50%);font-size:18px;}
+.categories{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;padding:30px 20px 10px;}
+.cat-btn{padding:8px 18px;border-radius:20px;border:1px solid rgba(0,229,255,0.2);color:#aaa;cursor:pointer;font-size:13px;background:transparent;transition:0.3s;}
+.cat-btn.active{background:linear-gradient(90deg,#00E5FF,#00897B);color:#060d1a;font-weight:bold;border:none;}
+.section{padding:20px;display:none;max-width:900px;margin:0 auto;}
+.section.active{display:block;}
+.section-title{color:#00E5FF;font-size:18px;margin-bottom:20px;border-left:3px solid #00897B;padding-left:10px;}
+.courses-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;}
+.course-card{background:linear-gradient(135deg,#0a1628,#062a2a);border:1px solid rgba(0,229,255,0.15);border-radius:15px;overflow:hidden;cursor:pointer;transition:0.3s;}
+.course-card:hover{border-color:#00E5FF;transform:translateY(-5px);box-shadow:0 10px 25px rgba(0,229,255,0.15);}
+.course-thumb{height:120px;display:flex;align-items:center;justify-content:center;font-size:50px;background:linear-gradient(135deg,#0a1628,#062a2a);}
+.course-info{padding:15px;}
+.course-tag{background:rgba(0,229,255,0.1);color:#00E5FF;font-size:10px;padding:3px 10px;border-radius:10px;display:inline-block;margin-bottom:8px;}
+.course-tag.free{background:rgba(0,229,255,0.1);color:#00E5FF;}
+.course-tag.pro{background:rgba(255,215,0,0.1);color:#FFD700;}
+.course-info h3{color:white;font-size:14px;margin-bottom:5px;}
+.course-info p{color:#aaa;font-size:12px;margin-bottom:10px;}
+.course-meta{display:flex;justify-content:space-between;align-items:center;}
+.course-meta span{color:#555;font-size:11px;}
+.enroll-btn{padding:6px 15px;background:linear-gradient(90deg,#00E5FF,#00897B);color:#060d1a;border:none;border-radius:8px;font-size:12px;font-weight:bold;cursor:pointer;}
+.topic-list{display:flex;flex-direction:column;gap:10px;}
+.topic-item{background:linear-gradient(135deg,#0a1628,#062a2a);border:1px solid rgba(0,229,255,0.15);border-radius:12px;padding:15px;display:flex;align-items:center;gap:15px;cursor:pointer;transition:0.3s;}
+.topic-item:hover{border-color:#00E5FF;}
+.topic-icon{font-size:30px;min-width:40px;text-align:center;}
+.topic-info h3{color:white;font-size:14px;margin-bottom:3px;}
+.topic-info p{color:#aaa;font-size:12px;}
+.topic-arrow{margin-left:auto;color:#00E5FF;font-size:18px;}
+.content-view{background:linear-gradient(135deg,#0a1628,#062a2a);border:1px solid rgba(0,229,255,0.2);border-radius:15px;padding:25px;margin-top:20px;display:none;}
+.content-view h2{color:#00E5FF;font-size:20px;margin-bottom:15px;}
+.content-view .content-body{color:#aaa;font-size:14px;line-height:1.8;}
+.content-view .content-body h3{color:#87CEEB;margin:15px 0 8px;}
+.content-view .content-body code{background:rgba(0,229,255,0.1);padding:2px 8px;border-radius:4px;color:#00E5FF;font-family:monospace;}
+.back-btn{background:transparent;border:1px solid #00E5FF;color:#00E5FF;padding:8px 15px;border-radius:8px;cursor:pointer;margin-bottom:20px;font-size:13px;}
+footer{background:#040a14;padding:30px 20px;border-top:1px solid rgba(0,229,255,0.1);text-align:center;margin-top:40px;}
+footer p{color:#333;font-size:12px;}
+footer a{color:#00E5FF;margin:0 8px;text-decoration:none;font-size:12px;}
+</style>
+</head>
+<body>
+<nav>
+<a href="index.html" class="logo">MoniX</a>
+<div class="nav-links">
+<a href="index.html">Home</a>
+<a href="tools.html">AI Tools</a>
+<a href="exams.html">Exams</a>
+<a href="login.html">Login</a>
+</div>
+</nav>
+
+<div class="hero">
+<div class="hero-badge">📚 Learn Anything</div>
+<h1>MoniX Learn</h1>
+<p>School to College — Everything in One Place</p>
+<div class="search-bar">
+<input type="text" placeholder="Search courses, topics..." id="search-input"/>
+<span>🔍</span>
+</div>
+</div>
+
+<div class="categories">
+<div class="cat-btn active" onclick="showCat('all',this)">⚡ All</div>
+<div class="cat-btn" onclick="showCat('school',this)">🏫 School</div>
+<div class="cat-btn" onclick="showCat('college',this)">🎓 College</div>
+<div class="cat-btn" onclick="showCat('coding',this)">💻 Coding</div>
+<div class="cat-btn" onclick="showCat('cyber',this)">🛡️ Cyber</div>
+<div class="cat-btn" onclick="showCat('skills',this)">🎯 Skills</div>
+</div>
+
+<!-- All -->
+<div class="section active" id="all">
+<p class="section-title">⚡ All Courses</p>
+<div class="courses-grid">
+<div class="course-card" onclick="openCourse('python')">
+<div class="course-thumb">🐍</div>
+<div class="course-info">
+<span class="course-tag free">Free</span>
+<h3>Python Programming</h3>
+<p>Learn Python from scratch — beginner to advanced</p>
+<div class="course-meta"><span>📚 20 Lessons</span><button class="enroll-btn">Start</button></div>
+</div></div>
+
+<div class="course-card" onclick="openCourse('web')">
+<div class="course-thumb">🌐</div>
+<div class="course-info">
+<span class="course-tag free">Free</span>
+<h3>Web Development</h3>
+<p>HTML, CSS, JavaScript — build websites</p>
+<div class="course-meta"><span>📚 25 Lessons</span><button class="enroll-btn">Start</button></div>
+</div></div>
+
+<div class="course-card" onclick="openCourse('cyber')">
+<div class="course-thumb">🛡️</div>
+<div class="course-info">
+<span class="course-tag free">Free</span>
+<h3>Ethical Hacking</h3>
+<p>Learn cybersecurity & ethical hacking basics</p>
+<div class="course-meta"><span>📚 15 Lessons</span><button class="enroll-btn">Start</button></div>
+</div></div>
+
+<div class="course-card" onclick="openCourse('math')">
+<div class="course-thumb">📐</div>
+<div class="course-info">
+<span class="course-tag free">Free</span>
+<h3>Mathematics</h3>
+<p>Class 10-12 Math — complete syllabus</p>
+<div class="course-meta"><span>📚 30 Lessons</span><button class="enroll-btn">Start</button></div>
+</div></div>
+
+<div class="course-card" onclick="openCourse('ai')">
+<div class="course-thumb">🤖</div>
+<div class="course-info">
+<span class="course-tag pro">Creator</span>
+<h3>AI & Machine Learning</h3>
+<p>Learn AI/ML with Python — projects included</p>
+<div class="course-meta"><span>📚 20 Lessons</span><button class="enroll-btn">Enroll</button></div>
+</div></div>
+
+<div class="course-card" onclick="openCourse('data')">
+<div class="course-thumb">📊</div>
+<div class="course-info">
+<span class="course-tag pro">Creator</span>
+<h3>Data Science</h3>
+<p>Data analysis, visualization & more</p>
+<div class="course-meta"><span>📚 18 Lessons</span><button class="enroll-btn">Enroll</button></div>
+</div></div>
+</div>
+</div>
+
+<!-- School -->
+<div class="section" id="school">
+<p class="section-title">🏫 School Classes</p>
+<div class="topic-list">
+<div class="topic-item" onclick="openTopic('class10')"><div class="topic-icon">📚</div><div class="topic-info"><h3>Class 10</h3><p>Math, Science, English, Social Science</p></div><div class="topic-arrow">→</div></div>
+<div class="topic-item" onclick="openTopic('class11')"><div class="topic-icon">📗</div><div class="topic-info"><h3>Class 11</h3><p>Physics, Chemistry, Math, Biology</p></div><div class="topic-arrow">→</div></div>
+<div class="topic-item" onclick="openTopic('class12')"><div class="topic-icon">🎓</div><div class="topic-info"><h3>Class 12</h3><p>Board exam preparation — all subjects</p></div><div class="topic-arrow">→</div></div>
+<div class="topic-item"><div class="topic-icon">📝</div><div class="topic-info"><h3>Class 9</h3><p>Foundation courses — all subjects</p></div><div class="topic-arrow">→</div></div>
+<div class="topic-item"><div class="topic-icon">🔬</div><div class="topic-info"><h3>Science (All Classes)</h3><p>Physics, Chemistry, Biology</p></div><div class="topic-arrow">→</div></div>
+</div>
+</div>
+
+<!-- College -->
+<div class="section" id="college">
+<p class="section-title">🎓 College Courses</p>
+<div class="topic-list">
+<div class="topic-item" onclick="openCourse('python')"><div class="topic-icon">💻</div><div class="topic-info"><h3>BCA — Computer Applications</h3><p>Programming, Networks, Database</p></div><div class="topic-arrow">→</div></div>
+<div class="topic-item"><div class="topic-icon">📊</div><div class="topic-info"><h3>BSc — Science</h3><p>Physics, Chemistry, Math, Biology</p></div><div class="topic-arrow">→</div></div>
+<div class="topic-item"><div class="topic-icon">💼</div><div class="topic-info"><h3>BCom — Commerce</h3><p>Accounts, Economics, Business</p></div><div class="topic-arrow">→</div></div>
+<div class="topic-item"><div class="topic-icon">🤖</div><div class="topic-info"><h3>BTech — Engineering</h3><p>CS, IT, Electronics, Mechanical</p></div><div class="topic-arrow">→</div></div>
+</div>
+</div>
+
+<!-- Coding -->
+<div class="section" id="coding">
+<p class="section-title">💻 Coding Courses</p>
+<div class="courses-grid">
+<div class="course-card" onclick="openCourse('python')"><div class="course-thumb">🐍</div><div class="course-info"><span class="course-tag free">Free</span><h3>Python</h3><p>Beginner to Advanced</p><div class="course-meta"><span>📚 20 Lessons</span><button class="enroll-btn">Start</button></div></div></div>
+<div class="course-card" onclick="openCourse('web')"><div class="course-thumb">🌐</div><div class="course-info"><span class="course-tag free">Free</span><h3>Web Dev</h3><p>HTML CSS JS</p><div class="course-meta"><span>📚 25 Lessons</span><button class="enroll-btn">Start</button></div></div></div>
+<div class="course-card" onclick="openCourse('ai')"><div class="course-thumb">🤖</div><div class="course-info"><span class="course-tag pro">Creator</span><h3>AI/ML</h3><p>Machine Learning</p><div class="course-meta"><span>📚 20 Lessons</span><button class="enroll-btn">Enroll</button></div></div></div>
+</div>
+</div>
+
+<!-- Cyber -->
+<div class="section" id="cyber">
+<p class="section-title">🛡️ Cybersecurity</p>
+<div class="courses-grid">
+<div class="course-card" onclick="openCourse('cyber')"><div class="course-thumb">🛡️</div><div class="course-info"><span class="course-tag free">Free</span><h3>Ethical Hacking</h3><p>Basics to Advanced</p><div class="course-meta"><span>📚 15 Lessons</span><button class="enroll-btn">Start</button></div></div></div>
+<div class="course-card"><div class="course-thumb">🔒</div><div class="course-info"><span class="course-tag pro">Creator</span><h3>Network Security</h3><p>Firewalls, VPN, IDS</p><div class="course-meta"><span>📚 12 Lessons</span><button class="enroll-btn">Enroll</button></div></div></div>
+</div>
+</div>
+
+<!-- Skills -->
+<div class="section" id="skills">
+<p class="section-title">🎯 Skill Courses</p>
+<div class="topic-list">
+<div class="topic-item"><div class="topic-icon">🎨</div><div class="topic-info"><h3>Graphic Design</h3><p>Canva, Photoshop basics</p></div><div class="topic-arrow">→</div></div>
+<div class="topic-item"><div class="topic-icon">📱</div><div class="topic-info"><h3>Digital Marketing</h3><p>SEO, Social Media, Ads</p></div><div class="topic-arrow">→</div></div>
+<div class="topic-item"><div class="topic-icon">🎥</div><div class="topic-info"><h3>Video Editing</h3><p>CapCut, Premiere basics</p></div><div class="topic-arrow">→</div></div>
+<div class="topic-item"><div class="topic-icon">✍️</div><div class="topic-info"><h3>Content Writing</h3><p>Blog, SEO writing</p></div><div class="topic-arrow">→</div></div>
+</div>
+</div>
+
+<!-- Course Content View -->
+<div class="section" id="course-view">
+<button class="back-btn" onclick="goBack()">← Back to Courses</button>
+<div class="content-view" id="course-content" style="display:block;"></div>
+</div>
+
+<footer>
+<p>© 2026 MoniX — India's Digital Ecosystem</p>
+<a href="index.html">Home</a>
+<a href="tools.html">AI Tools</a>
+<a href="#">Privacy</a>
+</footer>
+
+<script>
+var courses={
+python:{title:'🐍 Python Programming',content:`
+<h3>📌 What is Python?</h3>
+Python is a high-level, easy-to-learn programming language used in AI, web development, data science, and automation.
+
+<h3>📌 Lesson 1 — Hello World</h3>
+<code>print("Hello, World!")</code>
+
+<h3>📌 Lesson 2 — Variables</h3>
+<code>name = "Suraj"</code>
+<code>age = 20</code>
+<code>print(name, age)</code>
+
+<h3>📌 Lesson 3 — If/Else</h3>
+<code>if age >= 18:</code>
+<code>    print("Adult")</code>
+<code>else:</code>
+<code>    print("Minor")</code>
+
+<h3>📌 Lesson 4 — Loops</h3>
+<code>for i in range(5):</code>
+<code>    print(i)</code>
+
+<h3>📌 Lesson 5 — Functions</h3>
+<code>def greet(name):</code>
+<code>    return "Hello " + name</code>
+
+<h3>✅ More lessons coming soon!</h3>
+Practice on MoniX AI Tools → Code Generator!
+`},
+web:{title:'🌐 Web Development',content:`
+<h3>📌 What is Web Development?</h3>
+Web development is building websites using HTML, CSS, and JavaScript.
+
+<h3>📌 Lesson 1 — HTML Basics</h3>
+<code>&lt;html&gt;</code>
+<code>  &lt;body&gt;</code>
+<code>    &lt;h1&gt;Hello World&lt;/h1&gt;</code>
+<code>  &lt;/body&gt;</code>
+<code>&lt;/html&gt;</code>
+
+<h3>📌 Lesson 2 — CSS Styling</h3>
+<code>body { background: black; color: white; }</code>
+<code>h1 { color: cyan; font-size: 32px; }</code>
+
+<h3>📌 Lesson 3 — JavaScript</h3>
+<code>function hello() {</code>
+<code>  alert("Hello from MoniX!");</code>
+<code>}</code>
+
+<h3>✅ More lessons coming soon!</h3>
+`},
+cyber:{title:'🛡️ Ethical Hacking',content:`
+<h3>📌 What is Ethical Hacking?</h3>
+Ethical hacking means testing systems with permission to find security vulnerabilities.
+
+<h3>📌 Lesson 1 — Linux Basics</h3>
+<code>whoami</code> — Show current user
+<code>ls</code> — List files
+<code>pwd</code> — Current directory
+<code>nmap 127.0.0.1</code> — Scan ports
+
+<h3>📌 Lesson 2 — Networking</h3>
+• IP Address — Device identity
+• DNS — Domain to IP conversion
+• Ports — Communication channels
+
+<h3>📌 Lesson 3 — Tools</h3>
+• Nmap — Network scanner
+• Burp Suite — Web testing
+• Metasploit — Exploitation framework
+
+<h3>✅ More lessons coming soon!</h3>
+`},
+math:{title:'📐 Mathematics',content:`
+<h3>📌 Class 10-12 Math</h3>
+
+<h3>📌 Algebra</h3>
+• Quadratic equations: ax² + bx + c = 0
+• Solution: x = (-b ± √(b²-4ac)) / 2a
+
+<h3>📌 Trigonometry</h3>
+• sin²θ + cos²θ = 1
+• tan θ = sin θ / cos θ
+
+<h3>📌 Calculus</h3>
+• Differentiation: d/dx(xⁿ) = nxⁿ⁻¹
+• Integration: ∫xⁿ dx = xⁿ⁺¹/(n+1)
+
+<h3>✅ More topics coming soon!</h3>
+`},
+ai:{title:'🤖 AI & Machine Learning',content:`
+<h3>📌 What is AI?</h3>
+Artificial Intelligence is the simulation of human intelligence in machines.
+
+<h3>📌 Types of ML</h3>
+• Supervised Learning
+• Unsupervised Learning
+• Reinforcement Learning
+
+<h3>📌 Python for AI</h3>
+<code>import numpy as np</code>
+<code>import pandas as pd</code>
+<code>from sklearn.linear_model import LinearRegression</code>
+
+<h3>🔒 Full course available with Creator plan!</h3>
+`},
+data:{title:'📊 Data Science',content:`
+<h3>📌 What is Data Science?</h3>
+Data Science extracts insights from data using statistics, programming, and domain knowledge.
+
+<h3>📌 Tools</h3>
+• Python — Programming
+• Pandas — Data manipulation
+• Matplotlib — Visualization
+• Scikit-learn — Machine Learning
+
+<h3>🔒 Full course available with Creator plan!</h3>
+`}
+};
+
+var currentSection='all';
+
+function showCat(cat,el){
+document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
+document.getElementById(cat).classList.add('active');
+el.classList.add('active');
+currentSection=cat;
+}
+
+function openCourse(id){
+var c=courses[id];
+if(!c)return;
+document.getElementById('course-content').innerHTML='<h2>'+c.title+'</h2><div class="content-body">'+c.content+'</div>';
+document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+document.getElementById('course-view').classList.add('active');
+}
+
+function openTopic(id){openCourse(id);}
+
+function goBack(){
+document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+document.getElementById(currentSection).classList.add('active');
+}
+</script>
+</body>
+  </html>
