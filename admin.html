@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MoniX — Admin Panel</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#060d1a;color:white;font-family:Arial,sans-serif;}
+.login-screen{display:flex;justify-content:center;align-items:center;min-height:100vh;background:linear-gradient(135deg,#060d1a,#062a2a);}
+.login-box{background:linear-gradient(135deg,#0a1628,#062a2a);border:1px solid rgba(0,229,255,0.3);border-radius:20px;padding:40px;width:90%;max-width:380px;text-align:center;}
+.login-box h2{font-size:24px;background:linear-gradient(90deg,#00E5FF,#00897B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:5px;}
+.login-box p{color:#aaa;font-size:13px;margin-bottom:25px;}
+.login-box input{width:100%;padding:12px;background:rgba(0,229,255,0.05);border:1px solid rgba(0,229,255,0.2);border-radius:10px;color:white;font-size:14px;outline:none;margin-bottom:12px;}
+.login-box button{width:100%;padding:12px;background:linear-gradient(90deg,#00E5FF,#00897B);color:#060d1a;font-weight:bold;border:none;border-radius:10px;cursor:pointer;font-size:15px;}
+.error{color:#ff4444;font-size:13px;margin-top:10px;display:none;}
+.admin-panel{display:none;}
+nav{background:#0a1628;padding:15px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(0,229,255,0.2);position:sticky;top:0;z-index:100;}
+.logo{font-size:20px;font-weight:bold;background:linear-gradient(90deg,#00E5FF,#00897B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.admin-badge{background:rgba(255,165,0,0.2);border:1px solid orange;color:orange;padding:4px 12px;border-radius:10px;font-size:12px;}
+.logout-btn{background:transparent;border:1px solid #ff4444;color:#ff4444;padding:7px 15px;border-radius:8px;cursor:pointer;font-size:12px;}
+.sidebar-nav{display:flex;flex-wrap:wrap;gap:8px;padding:15px 20px;background:#060d1a;border-bottom:1px solid rgba(0,229,255,0.1);}
+.side-btn{padding:8px 15px;border-radius:20px;border:1px solid rgba(0,229,255,0.2);color:#aaa;cursor:pointer;font-size:13px;background:transparent;}
+.side-btn.active{background:linear-gradient(90deg,#00E5FF,#00897B);color:#060d1a;font-weight:bold;border:none;}
+.content{padding:20px;max-width:900px;margin:0 auto;}
+.panel{display:none;}
+.panel.active{display:block;}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:15px;margin-bottom:25px;}
+.stat-card{background:linear-gradient(135deg,#0a1628,#062a2a);border:1px solid rgba(0,229,255,0.15);border-radius:12px;padding:15px;text-align:center;}
+.stat-card .icon{font-size:24px;margin-bottom:8px;}
+.stat-card h3{font-size:24px;background:linear-gradient(90deg,#00E5FF,#00897B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.stat-card p{color:#aaa;font-size:11px;margin-top:3px;}
+.form-box{background:linear-gradient(135deg,#0a1628,#062a2a);border:1px solid rgba(0,229,255,0.2);border-radius:15px;padding:25px;margin-bottom:20px;}
+.form-box h3{color:#00E5FF;font-size:16px;margin-bottom:20px;border-left:3px solid #00897B;padding-left:10px;}
+.form-row{margin-bottom:15px;}
+.form-row label{display:block;color:#87CEEB;font-size:13px;margin-bottom:6px;}
+.form-row input,.form-row select,.form-row textarea{width:100%;padding:11px;background:rgba(0,229,255,0.05);border:1px solid rgba(0,229,255,0.2);border-radius:8px;color:white;font-size:14px;outline:none;}
+.form-row textarea{resize:vertical;min-height:80px;}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;}
+.add-btn{padding:11px 25px;background:linear-gradient(90deg,#00E5FF,#00897B);color:#060d1a;border:none;border-radius:10px;font-weight:bold;cursor:pointer;font-size:14px;}
+.clear-btn{padding:11px 25px;background:transparent;border:1px solid #ff4444;color:#ff4444;border-radius:10px;cursor:pointer;font-size:14px;}
+.success-msg{background:rgba(0,229,255,0.1);border:1px solid rgba(0,229,255,0.3);border-radius:8px;padding:10px;color:#00E5FF;font-size:13px;margin-top:10px;display:none;text-align:center;}
+.items-list{background:linear-gradient(135deg,#0a1628,#062a2a);border:1px solid rgba(0,229,255,0.15);border-radius:15px;padding:20px;}
+.items-list h3{color:#00E5FF;font-size:15px;margin-bottom:15px;}
+.item-row{background:rgba(0,229,255,0.03);border:1px solid rgba(0,229,255,0.1);border-radius:10px;padding:12px 15px;margin-bottom:10px;display:flex;align-items:center;gap:10px;}
+.item-row .item-icon{font-size:20px;}
+.item-row .item-info{flex:1;}
+.item-row .item-info h4{color:white;font-size:13px;}
+.item-row .item-info p{color:#aaa;font-size:11px;margin-top:2px;}
+.item-tag{background:rgba(0,229,255,0.1);color:#00E5FF;font-size:10px;padding:2px 8px;border-radius:8px;}
+.item-tag.pro{background:rgba(255,215,0,0.1);color:#FFD700;}
+.delete-btn{background:transparent;border:1px solid #ff4444;color:#ff4444;padding:5px 10px;border-radius:6px;cursor:pointer;font-size:11px;}
+.empty-msg{text-align:center;color:#555;padding:30px;font-size:14px;}
+</style>
+</head>
+<body>
+
+<!-- Login Screen -->
+<div class="login-screen" id="loginScreen">
+<div class="login-box">
+<h2>🔐 Admin Login</h2>
+<p>MoniX Admin Panel — Owner Only</p>
+<input type="text" id="admin-user" placeholder="Admin Username"/>
+<input type="password" id="admin-pass" placeholder="Admin Password"/>
+<button onclick="adminLogin()">Login to Admin Panel</button>
+<p class="error" id="admin-err">❌ Wrong credentials!</p>
+</div>
+</div>
+
+<!-- Admin Panel -->
+<div class="admin-panel" id="adminPanel">
+<nav>
+<div class="logo">MoniX Admin</div>
+<div style="display:flex;align-items:center;gap:10px;">
+<span class="admin-badge">👑 Owner</span>
+<button class="logout-btn" onclick="adminLogout()">Logout</button>
+</div>
+</nav>
+
+<div class="sidebar-nav">
+<div class="side-btn active" onclick="showPanel('dashboard',this)">📊 Dashboard</div>
+<div class="side-btn" onclick="showPanel('courses',this)">📚 Courses</div>
+<div class="side-btn" onclick="showPanel('tools',this)">🤖 AI Tools</div>
+<div class="side-btn" onclick="showPanel('news',this)">📰 News</div>
+<div class="side-btn" onclick="showPanel('exams',this)">🎯 Exams</div>
+<div class="side-btn" onclick="showPanel('users',this)">👥 Users</div>
+<div class="side-btn" onclick="showPanel('settings',this)">⚙️ Settings</div>
+</div>
+
+<div class="content">
+
+<!-- Dashboard -->
+<div class="panel active" id="panel-dashboard">
+<div class="stats-grid">
+<div class="stat-card"><div class="icon">📚</div><h3 id="stat-courses">0</h3><p>Total Courses</p></div>
+<div class="stat-card"><div class="icon">🤖</div><h3 id="stat-tools">0</h3><p>AI Tools</p></div>
+<div class="stat-card"><div class="icon">📰</div><h3 id="stat-news">0</h3><p>News Articles</p></div>
+<div class="stat-card"><div class="icon">🎯</div><h3 id="stat-exams">0</h3><p>Exam Topics</p></div>
+</div>
+<div class="form-box">
+<h3>👋 Welcome, Admin Suraj!</h3>
+<p style="color:#aaa;font-size:14px;line-height:1.8;">
+MoniX Admin Panel se tum:<br>
+✅ Courses add/delete kar sakte ho<br>
+✅ AI Tools manage kar sakte ho<br>
+✅ News articles add kar sakte ho<br>
+✅ Exam topics add kar sakte ho<br>
+✅ Platform settings change kar sakte ho<br><br>
+<span style="color:#00E5FF;">Note: Data browser mein save hota hai (LocalStorage)</span>
+</p>
+</div>
+</div>
+
+<!-- Courses -->
+<div class="panel" id="panel-courses">
+<div class="form-box">
+<h3>➕ Add New Course</h3>
+<div class="form-row"><label>Course Title</label><input type="text" id="c-title" placeholder="e.g. Python for Beginners"/></div>
+<div class="form-row"><label>Category</label>
+<select id="c-cat">
+<option>Coding</option><option>School</option><option>College</option>
+<option>Cyber Security</option><option>Skills</option><option>AI/ML</option>
+</select></div>
+<div class="form-row"><label>Description</label><textarea id="c-desc" placeholder="Course description..."></textarea></div>
+<div class="form-row"><label>Lessons Count</label><input type="number" id="c-lessons" placeholder="e.g. 20"/></div>
+<div class="form-row"><label>Plan</label>
+<select id="c-plan"><option>Free</option><option>Creator</option><option>Master</option></select></div>
+<div class="form-row"><label>Emoji Icon</label><input type="text" id="c-icon" placeholder="e.g. 🐍"/></div>
+<div class="btn-row">
+<button class="add-btn" onclick="addCourse()">✅ Add Course</button>
+<button class="clear-btn" onclick="clearAll('courses')">🗑️ Clear All</button>
+</div>
+<p class="success-msg" id="c-success">✅ Course added successfully!</p>
+</div>
+<div class="items-list">
+<h3>📚 All Courses (<span id="courses-count">0</span>)</h3>
+<div id="courses-list"></div>
+</div>
+</div>
+
+<!-- AI Tools -->
+<div class="panel" id="panel-tools">
+<div class="form-box">
+<h3>➕ Add New AI Tool</h3>
+<div class="form-row"><label>Tool Name</label><input type="text" id="t-title" placeholder="e.g. Essay Writer"/></div>
+<div class="form-row"><label>Category</label>
+<select id="t-cat">
+<option>Education</option><option>Coding</option><option>Writing</option>
+<option>Security</option><option>Productivity</option><option>Creative</option>
+</select></div>
+<div class="form-row"><label>Description</label><input type="text" id="t-desc" placeholder="Short description"/></div>
+<div class="form-row"><label>Plan</label>
+<select id="t-plan"><option>Free</option><option>Creator</option><option>Master</option></select></div>
+<div class="form-row"><label>Emoji Icon</label><input type="text" id="t-icon" placeholder="e.g. ✍️"/></div>
+<div class="btn-row">
+<button class="add-btn" onclick="addTool()">✅ Add Tool</button>
+<button class="clear-btn" onclick="clearAll('tools')">🗑️ Clear All</button>
+</div>
+<p class="success-msg" id="t-success">✅ Tool added successfully!</p>
+</div>
+<div class="items-list">
+<h3>🤖 All AI Tools (<span id="tools-count">0</span>)</h3>
+<div id="tools-list"></div>
+</div>
+</div>
+
+<!-- News -->
+<div class="panel" id="panel-news">
+<div class="form-box">
+<h3>➕ Add News Article</h3>
+<div class="form-row"><label>Title</label><input type="text" id="n-title" placeholder="News headline..."/></div>
+<div class="form-row"><label>Category</label>
+<select id="n-cat">
+<option>Tech</option><option>Exam</option><option>Career</option>
+<option>AI</option><option>Education</option><option>Sports</option>
+</select></div>
+<div class="form-row"><label>Content</label><textarea id="n-content" placeholder="News content..."></textarea></div>
+<div class="btn-row">
+<button class="add-btn" onclick="addNews()">✅ Add News</button>
+<button class="clear-btn" onclick="clearAll('news')">🗑️ Clear All</button>
+</div>
+<p class="success-msg" id="n-success">✅ News added successfully!</p>
+</div>
+<div class="items-list">
+<h3>📰 All News (<span id="news-count">0</span>)</h3>
+<div id="news-list"></div>
+</div>
+</div>
+
+<!-- Exams -->
+<div class="panel" id="panel-exams">
+<div class="form-box">
+<h3>➕ Add Exam Topic</h3>
+<div class="form-row"><label>Exam Name</label><input type="text" id="e-title" placeholder="e.g. SSC CGL 2026"/></div>
+<div class="form-row"><label>Category</label>
+<select id="e-cat">
+<option>Government</option><option>Board</option><option>Entrance</option><option>Banking</option>
+</select></div>
+<div class="form-row"><label>Description</label><textarea id="e-desc" placeholder="Exam details..."></textarea></div>
+<div class="form-row"><label>Emoji Icon</label><input type="text" id="e-icon" placeholder="e.g. 🏛️"/></div>
+<div class="btn-row">
+<button class="add-btn" onclick="addExam()">✅ Add Exam</button>
+<button class="clear-btn" onclick="clearAll('exams')">🗑️ Clear All</button>
+</div>
+<p class="success-msg" id="e-success">✅ Exam topic added!</p>
+</div>
+<div class="items-list">
+<h3>🎯 All Exams (<span id="exams-count">0</span>)</h3>
+<div id="exams-list"></div>
+</div>
+</div>
+
+<!-- Users -->
+<div class="panel" id="panel-users">
+<div class="form-box">
+<h3>👥 User Management</h3>
+<p style="color:#aaa;font-size:14px;line-height:1.8;">
+Real user management requires backend database.<br><br>
+✅ Currently available:<br>
+• View registered users (coming soon)<br>
+• Manage memberships (coming soon)<br>
+• Ban/unban users (coming soon)<br><br>
+<span style="color:#00E5FF;">Full user system will be available when MoniX backend is ready!</span>
+</p>
+</div>
+<div class="items-list">
+<h3>👤 Demo Users</h3>
+<div class="item-row">
+<div class="item-icon">👤</div>
+<div class="item-info"><h4>Suraj (Admin)</h4><p>admin@monix.com</p></div>
+<span class="item-tag">👑 Owner</span>
+</div>
+<div class="item-row">
+<div class="item-icon">👤</div>
+<div class="item-info"><h4>Demo User</h4><p>user@monix.com</p></div>
+<span class="item-tag">🆓 Explorer</span>
+</div>
+</div>
+</div>
+
+<!-- Settings -->
+<div class="panel" id="panel-settings">
+<div class="form-box">
+<h3>⚙️ Platform Settings</h3>
+<div class="form-row"><label>Platform Name</label><input type="text" id="s-name" value="MoniX"/></div>
+<div class="form-row"><label>Tagline</label><input type="text" id="s-tagline" value="Learn • Create • Earn • Grow"/></div>
+<div class="form-row"><label>Admin Email</label><input type="email" id="s-email" value="admin@monix.com"/></div>
+<div class="form-row"><label>Maintenance Mode</label>
+<select id="s-maintenance"><option>Off</option><option>On</option></select></div>
+<div class="btn-row">
+<button class="add-btn" onclick="saveSettings()">✅ Save Settings</button>
+</div>
+<p class="success-msg" id="s-success">✅ Settings saved!</p>
+</div>
+</div>
+
+</div>
+</div>
+
+<script>
+// Admin Login
+function adminLogin(){
+var u=document.getElementById('admin-user').value;
+var p=document.getElementById('admin-pass').value;
+if(u==='suraj'&&p==='monix@admin2026'){
+document.getElementById('loginScreen').style.display='none';
+document.getElementById('adminPanel').style.display='block';
+loadAll();
+}else{
+document.getElementById('admin-err').style.display='block';
+}}
+
+function adminLogout(){
+document.getElementById('loginScreen').style.display='flex';
+document.getElementById('adminPanel').style.display='none';
+}
+
+function showPanel(panel,el){
+document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+document.querySelectorAll('.side-btn').forEach(b=>b.classList.remove('active'));
+document.getElementById('panel-'+panel).classList.add('active');
+el.classList.add('active');
+}
+
+// Load all data
+function loadAll(){
+renderList('courses');
+renderList('tools');
+renderList('news');
+renderList('exams');
+updateStats();
+}
+
+function updateStats(){
+['courses','tools','news','exams'].forEach(k=>{
+var data=JSON.parse(localStorage.getItem('monix_'+k)||'[]');
+document.getElementById('stat-'+k).textContent=data.length;
+document.getElementById(k+'-count').textContent=data.length;
+});
+}
+
+// Add functions
+function addCourse(){
+var data=JSON.parse(localStorage.getItem('monix_courses')||'[]');
+var item={id:Date.now(),icon:document.getElementById('c-icon').value||'📚',title:document.getElementById('c-title').value,cat:document.getElementById('c-cat').value,desc:document.getElementById('c-desc').value,lessons:document.getElementById('c-lessons').value,plan:document.getElementById('c-plan').value};
+if(!item.title){alert('Enter course title!');return;}
+data.push(item);
+localStorage.setItem('monix_courses',JSON.stringify(data));
+showSuccess('c-success');
+clearForm(['c-title','c-desc','c-lessons','c-icon']);
+renderList('courses');
+updateStats();
+}
+
+function addTool(){
+var data=JSON.parse(localStorage.getItem('monix_tools')||'[]');
+var item={id:Date.now(),icon:document.getElementById('t-icon').value||'🤖',title:document.getElementById('t-title').value,cat:document.getElementById('t-cat').value,desc:document.getElementById('t-desc').value,plan:document.getElementById('t-plan').value};
+if(!item.title){alert('Enter tool name!');return;}
+data.push(item);
+localStorage.setItem('monix_tools',JSON.stringify(data));
+showSuccess('t-success');
+clearForm(['t-title','t-desc','t-icon']);
+renderList('tools');
+updateStats();
+}
+
+function addNews(){
+var data=JSON.parse(localStorage.getItem('monix_news')||'[]');
+var item={id:Date.now(),title:document.getElementById('n-title').value,cat:document.getElementById('n-cat').value,content:document.getElementById('n-content').value,date:new Date().toLocaleDateString()};
+if(!item.title){alert('Enter news title!');return;}
+data.push(item);
+localStorage.setItem('monix_news',JSON.stringify(data));
+showSuccess('n-success');
+clearForm(['n-title','n-content']);
+renderList('news');
+updateStats();
+}
+
+function addExam(){
+var data=JSON.parse(localStorage.getItem('monix_exams')||'[]');
+var item={id:Date.now(),icon:document.getElementById('e-icon').value||'🎯',title:document.getElementById('e-title').value,cat:document.getElementById('e-cat').value,desc:document.getElementById('e-desc').value};
+if(!item.title){alert('Enter exam name!');return;}
+data.push(item);
+localStorage.setItem('monix_exams',JSON.stringify(data));
+showSuccess('e-success');
+clearForm(['e-title','e-desc','e-icon']);
+renderList('exams');
+updateStats();
+}
+
+// Render lists
+function renderList(type){
+var data=JSON.parse(localStorage.getItem('monix_'+type)||'[]');
+var container=document.getElementById(type+'-list');
+if(data.length===0){container.innerHTML='<p class="empty-msg">No items yet. Add your first one! 👆</p>';return;}
+container.innerHTML=data.map(item=>`
+<div class="item-row">
+<div class="item-icon">${item.icon||'📌'}</div>
+<div class="item-info">
+<h4>${item.title}</h4>
+<p>${item.cat||''} ${item.desc?'• '+item.desc.substring(0,50)+'...':''}</p>
+</div>
+${item.plan?'<span class="item-tag '+(item.plan!=='Free'?'pro':'')+'">'+item.plan+'</span>':''}
+<button class="delete-btn" onclick="deleteItem('${type}',${item.id})">🗑️</button>
+</div>`).join('');
+}
+
+function deleteItem(type,id){
+var data=JSON.parse(localStorage.getItem('monix_'+type)||'[]');
+data=data.filter(i=>i.id!==id);
+localStorage.setItem('monix_'+type,JSON.stringify(data));
+renderList(type);
+updateStats();
+}
+
+function clearAll(type){
+if(confirm('Delete all '+type+'?')){
+localStorage.removeItem('monix_'+type);
+renderList(type);
+updateStats();
+}}
+
+function saveSettings(){
+showSuccess('s-success');
+}
+
+function showSuccess(id){
+var el=document.getElementById(id);
+el.style.display='block';
+setTimeout(()=>{el.style.display='none';},2000);
+}
+
+function clearForm(ids){
+ids.forEach(id=>{document.getElementById(id).value='';});
+}
+</script>
+</body>
+                                                                                              </html>
